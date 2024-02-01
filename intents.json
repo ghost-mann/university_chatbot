@@ -1,0 +1,49 @@
+{
+  "intents": [
+    {
+      "tag": "greetings",
+      "patterns": ["hello", "hi", "hey", "howdy", "greetings", "good morning", "good evening", "good afternoon", "how are you?"],
+      "responses": ["Hello! How can I assist you today?", "Hi there! How can I help?", "Hey! What can I do for you?"]
+    },
+    {
+      "tag": "opening_hours",
+      "patterns": ["What are the university's opening hours?", "When does the university open and close?", "Opening hours"],
+      "responses": ["The university is open from Monday to Friday, 8:00 AM to 5:00 PM. We are closed on weekends."]
+    },
+    {
+      "tag": "exam_periods",
+      "patterns": ["When are the exam periods?", "Exam schedule", "Upcoming exams"],
+      "responses": ["The exam periods are typically in December and April. However, please check the academic calendar for specific dates."]
+    },
+    {
+      "tag": "lesson_times",
+      "patterns": ["What are the lesson times?", "Class schedule", "Lecture timings"],
+      "responses": ["Lesson times vary. You can find your specific class schedule in your student portal or contact your department for details."]
+    },
+    {
+      "tag": "office_locations",
+      "patterns": ["Where are the main offices located?", "Office locations", "Where is the registrar's office?"],
+      "responses": ["Main offices, including the registrar's office, are located in the central administration building. You can also check the campus map for details."]
+    },
+    {
+      "tag": "fee_structure",
+      "patterns": ["How much are the tuition fees?", "Tell me about the fee structure", "Fee inquiry"],
+      "responses": ["For information on tuition fees and the fee structure, please visit the finance department's webpage or contact them directly."]
+    },
+    {
+      "tag": "exam_retakes",
+      "patterns": ["Can I retake exams?", "Exam retake policy", "Retaking exams"],
+      "responses": ["Yes, you can retake exams. Please review the university's exam retake policy for more details and procedures."]
+    },
+    {
+      "tag": "supplementary_procedures",
+      "patterns": ["Tell me about supplementary exam procedures", "How to apply for a supplementary exam?", "Supplementary exams"],
+      "responses": ["Supplementary exam procedures vary. Check with your department or the exams office for specific guidelines and application processes."]
+    },
+    {
+      "tag": "special_dates",
+      "patterns": ["Are there any special dates I should be aware of?", "University events", "Special occasions"],
+      "responses": ["Special dates, events, and holidays are listed on the university calendar. Check the calendar for important announcements and celebrations."]
+    }
+  ]
+}
