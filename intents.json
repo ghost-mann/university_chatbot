@@ -44,6 +44,19 @@
       "tag": "special_dates",
       "patterns": ["Are there any special dates I should be aware of?", "University events", "Special occasions"],
       "responses": ["Special dates, events, and holidays are listed on the university calendar. Check the calendar for important announcements and celebrations."]
-    }
+    },
+    {
+  "tag": "admissions_information",
+  "patterns": [
+    "What are the admission requirements for different courses?",
+    "Can you tell me about the entry criteria?",
+    "What qualifications do I need to apply for a course?"
+  ],
+  "responses": [
+    "The admission requirements for our various courses are as follows:\n\nCertificate Courses:\n- Minimum mean grade of D+ in KCSE or its equivalent (C Plain or pass or credit in respective subjects).\n- Obtained subsidiary passes in A-level or International Baccalaureate or its equivalent.\n\nDiploma Courses:\n- Mean grade of C- minus in KCSE.\n- Diploma in Law - KCSE mean grade of C Plain and C+ in English or Kiswahili.\n- Diploma in Early Childhood Development & Education - KCSE mean grade of C.\n- Obtained subsidiaries or a principal pass in Advanced certificate (A-level) or credit pass in International Baccalaureate “IB”.\n- A credit pass at Certificate level.\n\nACCA / CPA / CS:\n- Relevant qualifications apply.\n\nUndergraduate Courses:\n- A minimum mean grade of C+ (plus).\n- Advanced Certificate of Education GCE or A-levels applicants must have at least 2 principal passes and one subsidiary pass or its equivalent and must have passed in subjects related to the course applied for.\n- Diploma or professional certificate in a relevant discipline from an institution recognized by the University Senate.\n- Advanced Diploma in a relevant field, applicant must have an ordinary Diploma from a recognized institution.\n- Pre-University certificate with a mean of C+ (plus) and above from a recognized institution, and must have scored a C in KCSE or its equivalent.\n\nNON-KENYANS:\n- Admission is subject to equated qualifications by the Kenya National Qualifications Authority (KNQA).\n- Must have satisfied the minimum University entry requirement in their country and meet departmental requirements for the subjects applied for.\n- Candidates from non-English speaking countries should demonstrate proficiency in written and spoken English or undertake certificate in English course."
+  ]
+}
+
+
   ]
 }
