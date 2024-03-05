@@ -1,8 +1,10 @@
 # Import necessary libraries and modules
-import tkinter
+
 from tkinter import *
 from botapp import ChatApp as cA
-
+# import nltk
+# nltk.download('punkt')
+# nltk.download('wordnet')
 
 # Define the function to send messages
 def send():
