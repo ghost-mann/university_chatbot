@@ -64,16 +64,8 @@ def signup():
     cursor = conn.cursor()
 
     # Check if the admission number already exists
-
-    # The %s is a placeholder for a parameterized query.This is a security measure to prevent SQL injection attacks.
-
     query = "SELECT * FROM users WHERE admission_number = %s"
-
-    # The cursor is an object that allows Python code to execute SQL commands. The second argument (admission_number,
-    # ) is a tuple containing the values to substitute into the %s placeholders in the query.
     cursor.execute(query, (admission_number,))
-
-    # fetches the first matching user (if any) from the database.
     existing_user = cursor.fetchone()
 
     if existing_user:
@@ -91,16 +83,80 @@ def signup():
     cursor.close()
     conn.close()
 
-# Function to display the admin panel
-def admin_panel():
+# Function to handle admin login
+def admin_login():
+    # Create the admin login window
+    admin_login_window = tk.Toplevel(root)
+    admin_login_window.title("Admin Login")
+    admin_login_window.geometry("300x150")
+
+    # Function to validate admin credentials
+    def validate_admin():
+        admin_username = admin_username_entry.get()
+        admin_password = admin_password_entry.get()
+
+        # Connect to the MySQL database
+        conn = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="root",
+            database="chatbot"
+        )
+        cursor = conn.cursor()
+
+        # Check if the admin credentials are valid
+        query = "SELECT * FROM administrators WHERE admin_username = %s AND admin_password = %s"
+        cursor.execute(query, (admin_username, admin_password))
+        admin = cursor.fetchone()
+
+        if admin:
+            messagebox.showinfo("Login Successful", "Welcome, Admin!")
+            admin_login_window.withdraw()
+            open_admin_panel()
+        else:
+            messagebox.showerror("Login Failed", "Invalid username or password.")
+
+        # Close the database connection
+        cursor.close()
+        conn.close()
+
+    # Admin username label and entry
+    admin_username_label = tk.Label(admin_login_window, text="Username:")
+    admin_username_label.pack()
+    admin_username_entry = tk.Entry(admin_login_window)
+    admin_username_entry.pack()
+
+    # Admin password label and entry
+    admin_password_label = tk.Label(admin_login_window, text="Password:")
+    admin_password_label.pack()
+    admin_password_entry = tk.Entry(admin_login_window, show="*")
+    admin_password_entry.pack()
+
+    # Login button
+    login_button = tk.Button(admin_login_window, text="Login", command=validate_admin)
+    login_button.pack(pady=10)
+
+    # Show the admin login window
+    admin_login_window.mainloop()
+
+# Function to open the admin panel
+def open_admin_panel():
+    # Close the login window
+    login_window.withdraw()
+
     # Create the admin panel window
-    admin_window = tk.Toplevel(root)
-    admin_window.title("Admin Panel")
-    admin_window.geometry("990x600+50+50")
+    # ... (rest of the code remains the same)
+
+# ... (rest of the code remains the same)
+
+    # Create the admin panel window
+    admin_panel_window = tk.Toplevel(root)
+    admin_panel_window.title("Admin Panel")
+    admin_panel_window.geometry("400x300")
 
     # Function to fetch and display user data
     def display_users():
-        # Clear the existing data.Setting it to 'normal' allows modifications to its contents.
+        # Clear the existing data
         user_data_text.config(state='normal')
         user_data_text.delete('1.0', tk.END)
 
@@ -128,19 +184,26 @@ def admin_panel():
 
         user_data_text.config(state='disabled')
 
-    # Create a button to display user data
-    display_users_button = tk.Button(admin_window, text="Display Users", command=display_users)
-    display_users_button.pack(pady=10)
+    # Create buttons for admin panel functions
+    manage_users_button = tk.Button(admin_panel_window, text="Manage Users", command=display_users)
+    manage_users_button.pack(pady=5)
+
+    handle_inquiries_button = tk.Button(admin_panel_window, text="Handle Inquiries")
+    handle_inquiries_button.pack(pady=5)
+
+    analytics_button = tk.Button(admin_panel_window, text="Analytics")
+    analytics_button.pack(pady=5)
+
+    logout_button = tk.Button(admin_panel_window, text="Log Out", command=admin_panel_window.destroy)
+    logout_button.pack(pady=5)
 
     # Create a text widget to display user data
-    user_data_text = tk.Text(admin_window, height=10, width=50)
+    user_data_text = tk.Text(admin_panel_window, height=10, width=50)
     user_data_text.pack()
     user_data_text.config(state='disabled')
 
-    # Add any additional functionality for the admin panel here
-
     # Show the admin panel window
-    admin_window.mainloop()
+    admin_panel_window.mainloop()
 
 # Create the main window
 root = tk.Tk()
@@ -170,8 +233,8 @@ login_button.pack()
 signup_button = tk.Button(login_window, text="Sign Up", command=lambda: switch_window(login_window, signup_window))
 signup_button.pack()
 
-# Add a button or menu item to open the admin panel
-admin_button = tk.Button(login_window, text="Admin Panel", command=admin_panel)
+# Add a button to open the admin login window
+admin_button = tk.Button(login_window, text="Admin Login", command=admin_login)
 admin_button.pack()
 
 # Signup Window
