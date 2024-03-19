@@ -2,11 +2,14 @@ import tkinter as tk
 from tkinter import messagebox
 import mysql.connector
 from PIL import ImageTk
+import subprocess
+
 
 # Function to switch between windows
 def switch_window(window, new_window):
     window.withdraw()
     new_window.deiconify()
+
 
 # Function to handle login
 def login():
@@ -37,6 +40,7 @@ def login():
     # Close the database connection
     cursor.close()
     conn.close()
+
 
 # Function to handle signup
 def signup():
@@ -82,6 +86,7 @@ def signup():
     # Close the database connection
     cursor.close()
     conn.close()
+
 
 # Function to handle admin login
 def admin_login():
@@ -139,20 +144,16 @@ def admin_login():
     # Show the admin login window
     admin_login_window.mainloop()
 
+
 # Function to open the admin panel
 def open_admin_panel():
     # Close the login window
     login_window.withdraw()
 
     # Create the admin panel window
-    # ... (rest of the code remains the same)
-
-# ... (rest of the code remains the same)
-
-    # Create the admin panel window
     admin_panel_window = tk.Toplevel(root)
     admin_panel_window.title("Admin Panel")
-    admin_panel_window.geometry("400x300")
+    admin_panel_window.geometry("990x660+50+50")
 
     # Function to fetch and display user data
     def display_users():
@@ -184,8 +185,17 @@ def open_admin_panel():
 
         user_data_text.config(state='disabled')
 
+    def logout():
+        # close admin panel window
+        admin_panel_window.destroy()
+
+    def launch_manage_users():
+        subprocess.Popen(["python", "admin.py"])
+        # destroy admin_panel after launching admin.py for managing users
+        admin_panel_window.destroy()
+
     # Create buttons for admin panel functions
-    manage_users_button = tk.Button(admin_panel_window, text="Manage Users", command=display_users)
+    manage_users_button = tk.Button(admin_panel_window, text="Manage Users", command=launch_manage_users)
     manage_users_button.pack(pady=5)
 
     handle_inquiries_button = tk.Button(admin_panel_window, text="Handle Inquiries")
@@ -194,7 +204,7 @@ def open_admin_panel():
     analytics_button = tk.Button(admin_panel_window, text="Analytics")
     analytics_button.pack(pady=5)
 
-    logout_button = tk.Button(admin_panel_window, text="Log Out", command=admin_panel_window.destroy)
+    logout_button = tk.Button(admin_panel_window, text="Log Out", command=logout)
     logout_button.pack(pady=5)
 
     # Create a text widget to display user data
@@ -204,6 +214,7 @@ def open_admin_panel():
 
     # Show the admin panel window
     admin_panel_window.mainloop()
+
 
 # Create the main window
 root = tk.Tk()
@@ -236,6 +247,7 @@ signup_button.pack()
 # Add a button to open the admin login window
 admin_button = tk.Button(login_window, text="Admin Login", command=admin_login)
 admin_button.pack()
+
 
 # Signup Window
 signup_window = tk.Toplevel(root)
