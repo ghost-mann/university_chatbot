@@ -20,7 +20,7 @@ def display_users(tree):
         tree.delete(item)
 
     # Fetch user data from the database
-    query = "SELECT admission_number, first_name, last_name, email, department FROM users"
+    query = 'SELECT admission_number, first_name, last_name, email, department FROM users'
     cursor.execute(query)
     users = cursor.fetchall()
 

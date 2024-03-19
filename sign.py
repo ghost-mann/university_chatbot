@@ -155,35 +155,6 @@ def open_admin_panel():
     admin_panel_window.title("Admin Panel")
     admin_panel_window.geometry("990x660+50+50")
 
-    # Function to fetch and display user data
-    def display_users():
-        # Clear the existing data
-        user_data_text.config(state='normal')
-        user_data_text.delete('1.0', tk.END)
-
-        # Connect to the MySQL database
-        conn = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="root",
-            database="chatbot"
-        )
-        cursor = conn.cursor()
-
-        # Fetch user data from the database
-        query = "SELECT * FROM users"
-        cursor.execute(query)
-        users = cursor.fetchall()
-
-        # Display user data in the text widget
-        for user in users:
-            user_data_text.insert(tk.END, str(user) + "\n")
-
-        # Close the database connection
-        cursor.close()
-        conn.close()
-
-        user_data_text.config(state='disabled')
 
     def logout():
         # close admin panel window
