@@ -6,7 +6,7 @@ from sign import open_admin_panel
 # Connect to MySQL database
 conn = mysql.connector.connect(
     host="localhost",
-    user="root",
+    user="austin",
     password="root",
     database="chatbot"
 )

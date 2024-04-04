@@ -4,8 +4,8 @@ import numpy as np
 import random
 import nltk
 import utils as u
-#nltk.download('punkt')
-#nltk.download('wordnet')
+nltk.download('punkt')
+nltk.download('wordnet')
 
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Dropout

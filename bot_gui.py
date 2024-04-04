@@ -2,7 +2,7 @@
 
 from tkinter import *
 from botapp import ChatApp as cA
-# import nltk
+import nltk
 # nltk.download('punkt')
 # nltk.download('wordnet')
 
