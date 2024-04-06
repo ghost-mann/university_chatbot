@@ -33,7 +33,7 @@ def login():
     if user:
         messagebox.showinfo("Login Successful", "Welcome!")
         # Launch the bot_gui.py script
-        subprocess.Popen(["python", "bot_gui.py"])
+        subprocess.Popen(["python", "bot_gui.py", "--admission-number", str(admission_number)])
         # close current window
         login_window.withdraw()
 

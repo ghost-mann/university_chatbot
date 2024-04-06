@@ -1,10 +1,10 @@
 # Import necessary libraries and modules
-
 from tkinter import *
 from botapp import ChatApp as cA
-import nltk
-# nltk.download('punkt')
-# nltk.download('wordnet')
+import mysql.connector
+import sys
+
+admission_number = sys.argv[2]
 
 # Define the function to send messages
 def send():
@@ -26,6 +26,37 @@ def send():
         ChatLog.yview(END)
 
 
+# Function to get the logged-in user's admission number
+def get_logged_in_user_admission_number():
+    try:
+        # Connect to the MySQL database
+        conn = mysql.connector.connect(
+            host="localhost",
+            user="austin",
+            password="root",
+            database="chatbot"
+        )
+        cursor = conn.cursor()
+
+        logged_in_user_identifier = "example_user"
+        query = "SELECT * FROM users WHERE admission_number = %s"
+        cursor.execute(query, (logged_in_user_identifier,))
+        result = cursor.fetchone()
+
+        # Close the database connection
+        cursor.close()
+        conn.close()
+
+        # Return the admission number if found, otherwise return None
+        if result:
+            return result[0]
+        else:
+            return None
+    except mysql.connector.Error as error:
+        print("Error connecting to the database:", error)
+        return None
+
+
 # Create the main GUI window
 base = Tk()
 base.title("ChatBot - SL")
@@ -33,16 +64,17 @@ base.geometry("990x660+50+50")
 base.resizable(width=FALSE, height=FALSE)
 
 # Create Chat window
-ChatLog = Text(base, bd=0, bg="white", height="8", width="50", font="Arial", )
+ChatLog = Text(base, bd=0, bg="white", height="8", width="50", font="Arial")
 ChatLog.config(state=DISABLED)
 
-# vertical scrollbar to Chat window
+# Vertical scrollbar to Chat window
 scrollbar = Scrollbar(base, command=ChatLog.yview, cursor="arrow", width=20)
 ChatLog['yscrollcommand'] = scrollbar.set
 
-# horizontal scrollbar
+# Horizontal scrollbar
 h_scrollbar = Scrollbar(base, orient='horizontal', command=ChatLog.xview, width=20, cursor="arrow")
 ChatLog['xscrollcommand'] = h_scrollbar.set
+
 # Create Button to send message
 SendButton = Button(base, font=("Verdana", 12, 'bold'), text="Send", width="12", height=5,
                     bd=0, bg="#32de97", activebackground="#3c9d9b", fg='#ffffff',
@@ -51,12 +83,29 @@ SendButton = Button(base, font=("Verdana", 12, 'bold'), text="Send", width="12",
 # Create the box to enter message
 EntryBox = Text(base, bd=0, bg="white", width="29", height="5", font="Arial")
 
+# Create a label to display the admission number
+admission_number_label = Label(base, text=f"Admission Number:", font=("Arial", 12, 'bold'))
+
+# create an inquiry submission box
+InquiryBox = Text(base, bd=0, bg="white", width="29", height="5", font="Arial")
+
+# create a inquire button
+inquiry_button = Button(base, font=("Verdana", 12, 'bold'), text="Send", width="12", height=5,
+                        bd=0, bg="#32de97", activebackground="#3c9d9b", fg='#ffffff',
+                        )
+
+# Get the logged-in user's admission number and update the label
+logged_in_user_admission_number = get_logged_in_user_admission_number()
+admission_number_label.config(text=f"Admission Number : {admission_number}")
+
 # Place all components on the screen
 scrollbar.place(x=545, y=6, height=386)
 h_scrollbar.place(x=2, y=395, width=550)
 ChatLog.place(x=6, y=6, height=386, width=550)
 EntryBox.place(x=128, y=450, height=90, width=440)
 SendButton.place(x=6, y=450, height=90)
+admission_number_label.place(x=700, y=10)
+InquiryBox.place(x=650, y=100, width=300)
 
 # Start the GUI main loop
 base.mainloop()
