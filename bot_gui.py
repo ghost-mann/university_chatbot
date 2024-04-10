@@ -1,10 +1,13 @@
 # Import necessary libraries and modules
 from tkinter import *
+from tkinter import messagebox
+import subprocess
 from botapp import ChatApp as cA
 import mysql.connector
 import sys
 
 admission_number = sys.argv[2]
+
 
 # Define the function to send messages
 def send():
@@ -24,6 +27,38 @@ def send():
         ChatLog.insert(END, "Bot: " + res + '\n\n')
         ChatLog.config(state=DISABLED)
         ChatLog.yview(END)
+
+
+# function to submit inquiry into the database
+def submit_inquiry():
+    inquiry_text = InquiryBox.get("1.0", 'end-1c').strip()
+    InquiryBox.delete("0.0", END)
+
+    if inquiry_text:
+        try:
+            # connect to the database
+            conn = mysql.connector.connect(
+                host="localhost",
+                user="austin",
+                password="root",
+                database="chatbot"
+            )
+            cursor = conn.cursor()
+
+            # insert the inquiry into the database
+            query = "INSERT INTO inquiries (inquiry, admission_number) VALUES (%s, %s)"
+            values = (inquiry_text, admission_number)
+            cursor.execute(query, values)
+            conn.commit()
+
+            # close the database connection
+            cursor.close()
+            conn.close()
+
+            messagebox.showinfo("Success", "Inquiry submitted successfully!")
+        except mysql.connector.Error as error:
+            print("Error submitting inquiry:", error)
+            messagebox.showerror("Error", "Failed to submit inquiry! Please try again.")
 
 
 # Function to get the logged-in user's admission number
@@ -55,6 +90,11 @@ def get_logged_in_user_admission_number():
     except mysql.connector.Error as error:
         print("Error connecting to the database:", error)
         return None
+
+
+def logout():
+    subprocess.Popen(["python", "sign.py"])
+    base.withdraw()
 
 
 # Create the main GUI window
@@ -90,9 +130,12 @@ admission_number_label = Label(base, text=f"Admission Number:", font=("Arial", 1
 InquiryBox = Text(base, bd=0, bg="white", width="29", height="5", font="Arial")
 
 # create a inquire button
-inquiry_button = Button(base, font=("Verdana", 12, 'bold'), text="Send", width="12", height=5,
-                        bd=0, bg="#32de97", activebackground="#3c9d9b", fg='#ffffff',
+inquiry_button = Button(base, font=("Verdana", 12, 'bold'), text="Submit Inquiry", width="12", height=5,
+                        bd=0, bg="#32de97", activebackground="#3c9d9b", fg='#ffffff', command=submit_inquiry
                         )
+# create a logout button
+logout_button = Button(base, font=("Verdana", 12, 'bold'), text="Logout", width="12", height=5,
+                       bd=0, bg="#32de97", activebackground="#3c9d9b", fg='white', command=logout)
 
 # Get the logged-in user's admission number and update the label
 logged_in_user_admission_number = get_logged_in_user_admission_number()
@@ -106,6 +149,7 @@ EntryBox.place(x=128, y=450, height=90, width=440)
 SendButton.place(x=6, y=450, height=90)
 admission_number_label.place(x=700, y=10)
 InquiryBox.place(x=650, y=100, width=300)
-
+inquiry_button.place(x=730, y=250, height=90)
+logout_button.place(x=730, y=400, height=90)
 # Start the GUI main loop
 base.mainloop()
