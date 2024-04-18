@@ -158,7 +158,6 @@ def open_admin_panel():
     admin_panel_window.title("Admin Panel")
     admin_panel_window.geometry("990x660+50+50")
 
-
     def logout():
         # close admin panel window
         admin_panel_window.destroy()
@@ -168,11 +167,15 @@ def open_admin_panel():
         # destroy admin_panel after launching admin.py for managing users
         admin_panel_window.destroy()
 
+    def launch_manage_inquiries():
+        subprocess.Popen(["python", "inquiry.py"])
+        admin_panel_window.destroy()
+
     # Create buttons for admin panel functions
     manage_users_button = tk.Button(admin_panel_window, text="Manage Users", command=launch_manage_users)
     manage_users_button.pack(pady=5)
 
-    handle_inquiries_button = tk.Button(admin_panel_window, text="Handle Inquiries")
+    handle_inquiries_button = tk.Button(admin_panel_window, text="Handle Inquiries", command=launch_manage_inquiries)
     handle_inquiries_button.pack(pady=5)
 
     analytics_button = tk.Button(admin_panel_window, text="Analytics")
@@ -180,11 +183,6 @@ def open_admin_panel():
 
     logout_button = tk.Button(admin_panel_window, text="Log Out", command=logout)
     logout_button.pack(pady=5)
-
-    # Create a text widget to display user data
-    user_data_text = tk.Text(admin_panel_window, height=10, width=50)
-    user_data_text.pack()
-    user_data_text.config(state='disabled')
 
     # Show the admin panel window
     admin_panel_window.mainloop()
@@ -221,7 +219,6 @@ signup_button.pack()
 # Add a button to open the admin login window
 admin_button = tk.Button(login_window, text="Admin Login", command=admin_login)
 admin_button.pack()
-
 
 # Signup Window
 signup_window = tk.Toplevel(root)

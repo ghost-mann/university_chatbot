@@ -1,7 +1,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 import mysql.connector
-from sign import open_admin_panel
 
 # Connect to MySQL database
 conn = mysql.connector.connect(
@@ -34,7 +33,7 @@ def edit_user(tree):
         admission_number, first_name, last_name, email, department = tree.item(selected_item)["values"]
         edit_window = tk.Toplevel(root)
         edit_window.title("Edit User")
-        edit_window.geometry("990x660+50+50")
+        edit_window.geometry("1000x660+50+50")
 
         # First Name
         first_name_label = tk.Label(edit_window, text="First Name:")
@@ -96,8 +95,8 @@ def delete_user(tree):
 
 
 def back_to_admin_panel():
-    root.destroy()
-    open_admin_panel()
+    root.withdraw()
+
 
 
 # Create the main window
@@ -136,7 +135,7 @@ delete_button = tk.Button(button_frame, text="Delete User", command=lambda: dele
 delete_button.pack(side=tk.LEFT, padx=5, pady=5)
 
 back_button = tk.Button(button_frame, text="Back", command=back_to_admin_panel)
-back_button.pack(side=tk.LEFT, padx=5, pady=5)
+back_button.pack(side=tk.LEFT, padx=1, pady=5)
 
 root.mainloop()
 
