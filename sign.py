@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 import mysql.connector
-from PIL import ImageTk
+from PIL import ImageTk, Image
 import subprocess
 
 
@@ -191,34 +191,59 @@ def open_admin_panel():
 # Create the main window
 root = tk.Tk()
 root.title("Login and Sign Up Application")
+root.attributes("-fullscreen", True)
 root.withdraw()  # Hide the main window
 
 # Login Window
 login_window = tk.Toplevel(root)
-login_window.title("Login")
+login_window.title("University Customer Care AI Chatbot")
 login_window.geometry('990x660+50+50')
-login_window.resizable(0, 0)
-bgImage = ImageTk.PhotoImage(file='./images/nebula.jpg')
+login_window.resizable()
 
-admission_number_label = tk.Label(login_window, text="Admission Number:")
-admission_number_label.pack()
-admission_number_entry = tk.Entry(login_window)
-admission_number_entry.pack()
 
-password_label = tk.Label(login_window, text="Password:")
-password_label.pack()
+# Load and resize the logo image
+logo_image = Image.open('images/mtejaai.png')
+logo_image = logo_image.resize((350, 250))  # Adjust the dimensions as needed
+logo_image = ImageTk.PhotoImage(logo_image)
+
+# Load the background image
+bgImage = ImageTk.PhotoImage(Image.open('./images/nebula.jpg'))
+
+# Create a canvas
+canvas = tk.Canvas(login_window, width=990, height=660)
+canvas.pack()
+
+# Add the background image to the canvas
+canvas.create_image(0, 0, anchor=tk.NW, image=bgImage)
+
+# Add the logo
+logo_label = tk.Label(login_window, image=logo_image)
+logo_label.place(x=330, y=80)
+
+
+
+admission_number_label = tk.Label(login_window, text="Admission Number:", font=("Helvetica", 15), fg="white",
+                                  bg="#7f1d1d")
+admission_number_label.place(x=250, y=350)
+admission_number_entry = tk.Entry(login_window, font=("Helvetica", 10), bg="white")
+admission_number_entry.place(x=450, y=350, width=320, height=35)
+
+password_label = tk.Label(login_window, text="Password:", font=("Helvetica", 15), fg="white", bg="#7f1d1d")
+password_label.place(x=250, y=400)
 password_entry = tk.Entry(login_window, show="*")
-password_entry.pack()
+password_entry.place(x=450, y=400, width=320, height=35)
 
-login_button = tk.Button(login_window, text="Login", command=login)
-login_button.pack()
+login_button = tk.Button(login_window, text="Login", font=("Helvetica", 15), fg="white", bg="#7f1d1d", command=login)
+login_button.place(x=250, y=500, width=100, height=45)
 
-signup_button = tk.Button(login_window, text="Sign Up", command=lambda: switch_window(login_window, signup_window))
-signup_button.pack()
+signup_button = tk.Button(login_window, text="Sign Up", font=("Helvetica", 15), fg="white", bg="#7f1d1d",
+                          command=lambda: switch_window(login_window, signup_window))
+signup_button.place(x=450, y=500, width=100, height=45)
 
 # Add a button to open the admin login window
-admin_button = tk.Button(login_window, text="Admin Login", command=admin_login)
-admin_button.pack()
+admin_button = tk.Button(login_window, text="Admin Login", font=("Helvetica", 15), fg="white", bg="#7f1d1d",
+                         command=admin_login)
+admin_button.place(x=650, y=500, width=120, height=45)
 
 # Signup Window
 signup_window = tk.Toplevel(root)

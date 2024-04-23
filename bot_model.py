@@ -110,9 +110,9 @@ class ChatModel:
         return train_x, train_y
 
     def training(self, train_x, train_y):
-        # Sequential from Keras
-        # Create model - 3 layers. First layer 128 neurons, second layer 64 neurons and 3rd output layer contains the number of neurons
-        # equal to the number of intents to predict output intent with softmax
+        # Sequential from Keras Create model - 3 layers. First layer 128 neurons, second layer 64 neurons and 3rd
+        # output layer contains the number of neurons equal to the number of intents to predict output intent with
+        # softmax
         model = Sequential()
         model.add(Dense(128, input_shape=(len(train_x[0]),), activation='relu'))
         model.add(Dropout(0.5))
@@ -120,7 +120,8 @@ class ChatModel:
         model.add(Dropout(0.5))
         model.add(Dense(len(train_y[0]), activation='softmax'))
 
-        # Compile model. Stochastic gradient descent with Nesterov accelerated gradient gives good results for this model
+        # Compile model. Stochastic gradient descent with Nesterov accelerated gradient gives good results for this
+        # model
         sgd = SGD(learning_rate=0.01, momentum=0.9, nesterov=True)  # Adjusted for the new Keras syntax
         model.compile(loss='categorical_crossentropy', optimizer=sgd, metrics=['accuracy'])
 

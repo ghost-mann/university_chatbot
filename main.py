@@ -81,7 +81,7 @@ class Login:
         # Database connection
         self.connection = mysql.connector.connect(
             host="localhost",
-            user="root",
+            user="austin",
             password="root",
             database="chatbot"
         )
@@ -121,7 +121,7 @@ class Login:
             messagebox.showerror("Error", "All fields are required", parent=self.root)
         else:
             # Check the credentials against the database
-            query = "SELECT * FROM users WHERE username = %s AND password = %s"
+            query = "SELECT * FROM users WHERE admission_number = %s AND password = %s"
             values = (username, password)
             self.cursor.execute(query, values)
             user = self.cursor.fetchone()
