@@ -158,6 +158,14 @@ def open_admin_panel():
     admin_panel_window.title("Admin Panel")
     admin_panel_window.geometry("990x660+50+50")
 
+    # Function to resize the background image
+    def resize_background_image(event):
+        canvas_width = event.width
+        canvas_height = event.height
+        bg_image = ImageTk.PhotoImage(Image.open('./images/nebula.jpg').resize((canvas_width, canvas_height)))
+        canvas.create_image(canvas_width // 2, canvas_height // 2, anchor=tk.CENTER, image=bg_image)
+        canvas.bg_image = bg_image
+
     def logout():
         # close admin panel window
         admin_panel_window.destroy()
@@ -191,60 +199,69 @@ def open_admin_panel():
 # Create the main window
 root = tk.Tk()
 root.title("Login and Sign Up Application")
-root.attributes("-fullscreen", True)
+# root.attributes("-fullscreen", True)
 root.withdraw()  # Hide the main window
 
 # Login Window
 login_window = tk.Toplevel(root)
 login_window.title("University Customer Care AI Chatbot")
-login_window.geometry('990x660+50+50')
-login_window.resizable()
-
+login_window.geometry('1800x1000+50+50')
 
 # Load and resize the logo image
 logo_image = Image.open('images/mtejaai.png')
-logo_image = logo_image.resize((350, 250))  # Adjust the dimensions as needed
+logo_image = logo_image.resize((500, 350))  # Adjust the dimensions as needed
 logo_image = ImageTk.PhotoImage(logo_image)
 
 # Load the background image
 bgImage = ImageTk.PhotoImage(Image.open('./images/nebula.jpg'))
 
 # Create a canvas
-canvas = tk.Canvas(login_window, width=990, height=660)
-canvas.pack()
+canvas = tk.Canvas(login_window, width=1800, height=1000)
+canvas.pack(fill=tk.BOTH, expand=True)
+
+
+# Function to resize the background image
+def resize_background_image(event):
+    canvas_width = event.width
+    canvas_height = event.height
+    bg_image = ImageTk.PhotoImage(Image.open('./images/nebula.jpg').resize((canvas_width, canvas_height)))
+    canvas.create_image(canvas_width // 2, canvas_height // 2, anchor=tk.CENTER, image=bg_image)
+    canvas.bg_image = bg_image  # Keep a reference to prevent garbage collection
+
+
+# Bind the <Configure> event to the canvas to resize the background image
+canvas.bind('<Configure>', resize_background_image)
 
 # Add the background image to the canvas
-canvas.create_image(0, 0, anchor=tk.NW, image=bgImage)
+bg_image = ImageTk.PhotoImage(Image.open('./images/nebula.jpg'))
+canvas.create_image(canvas.winfo_width() // 2, canvas.winfo_height() // 2, anchor=tk.CENTER, image=bg_image)
+canvas.bg_image = bg_image  # Keep a reference to prevent garbage collection
 
 # Add the logo
 logo_label = tk.Label(login_window, image=logo_image)
-logo_label.place(x=330, y=80)
+logo_label.place(x=650, y=150)
 
+admission_number_label = tk.Label(login_window, text="Admission Number:", font=("Helvetica", 20), fg="white", bg="#7f1d1d")
+admission_number_label.place(x=550, y=550)
+admission_number_entry = tk.Entry(login_window, font=("Helvetica", 16), bg="white")
+admission_number_entry.place(x=800, y=550, width=400, height=50)
 
+password_label = tk.Label(login_window, text="Password:", font=("Helvetica", 20), fg="white", bg="#7f1d1d")
+password_label.place(x=550, y=650)
+password_entry = tk.Entry(login_window, show="*", font=("Helvetica", 16), bg="white")
+password_entry.place(x=800, y=650, width=400, height=50)
 
-admission_number_label = tk.Label(login_window, text="Admission Number:", font=("Helvetica", 15), fg="white",
-                                  bg="#7f1d1d")
-admission_number_label.place(x=250, y=350)
-admission_number_entry = tk.Entry(login_window, font=("Helvetica", 10), bg="white")
-admission_number_entry.place(x=450, y=350, width=320, height=35)
+login_button = tk.Button(login_window, text="Login", font=("Helvetica", 20), fg="white", bg="#7f1d1d", command=login)
+login_button.place(x=600, y=750, width=200, height=60)
 
-password_label = tk.Label(login_window, text="Password:", font=("Helvetica", 15), fg="white", bg="#7f1d1d")
-password_label.place(x=250, y=400)
-password_entry = tk.Entry(login_window, show="*")
-password_entry.place(x=450, y=400, width=320, height=35)
-
-login_button = tk.Button(login_window, text="Login", font=("Helvetica", 15), fg="white", bg="#7f1d1d", command=login)
-login_button.place(x=250, y=500, width=100, height=45)
-
-signup_button = tk.Button(login_window, text="Sign Up", font=("Helvetica", 15), fg="white", bg="#7f1d1d",
+signup_button = tk.Button(login_window, text="Sign Up", font=("Helvetica", 20), fg="white", bg="#7f1d1d",
                           command=lambda: switch_window(login_window, signup_window))
-signup_button.place(x=450, y=500, width=100, height=45)
+signup_button.place(x=1000, y=750, width=200, height=60)
 
 # Add a button to open the admin login window
-admin_button = tk.Button(login_window, text="Admin Login", font=("Helvetica", 15), fg="white", bg="#7f1d1d",
+admin_button = tk.Button(login_window, text="Admin Login", font=("Helvetica", 20), fg="white", bg="#7f1d1d",
                          command=admin_login)
-admin_button.place(x=650, y=500, width=120, height=45)
-
+admin_button.place(x=800, y=850, width=200, height=60)
 # Signup Window
 signup_window = tk.Toplevel(root)
 signup_window.title("Sign Up")
