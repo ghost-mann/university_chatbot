@@ -241,7 +241,8 @@ canvas.bg_image = bg_image  # Keep a reference to prevent garbage collection
 logo_label = tk.Label(login_window, image=logo_image)
 logo_label.place(x=650, y=150)
 
-admission_number_label = tk.Label(login_window, text="Admission Number:", font=("Helvetica", 20), fg="white", bg="#7f1d1d")
+admission_number_label = tk.Label(login_window, text="Admission Number:", font=("Helvetica", 20), fg="white",
+                                  bg="#7f1d1d")
 admission_number_label.place(x=550, y=550)
 admission_number_entry = tk.Entry(login_window, font=("Helvetica", 16), bg="white")
 admission_number_entry.place(x=800, y=550, width=400, height=50)
@@ -262,62 +263,89 @@ signup_button.place(x=1000, y=750, width=200, height=60)
 admin_button = tk.Button(login_window, text="Admin Login", font=("Helvetica", 20), fg="white", bg="#7f1d1d",
                          command=admin_login)
 admin_button.place(x=800, y=850, width=200, height=60)
-# Signup Window
+
 # Signup Window
 signup_window = tk.Toplevel(root)
 signup_window.title("Sign Up")
 signup_window.geometry('1800x1000+50+50')
 
+# Create a canvas for the signup window
+signup_canvas = tk.Canvas(signup_window, width=1800, height=1000)
+signup_canvas.pack(fill=tk.BOTH, expand=True)
+
+
+# Function to resize the background image for the signup window
+def resize_signup_background_image(event):
+    canvas_width = event.width
+    canvas_height = event.height
+    bg_image = ImageTk.PhotoImage(Image.open('./images/nebula.jpg').resize((canvas_width, canvas_height)))
+    signup_canvas.create_image(canvas_width // 2, canvas_height // 2, anchor=tk.CENTER, image=bg_image)
+    signup_canvas.bg_image = bg_image  # Keep a reference to prevent garbage collection
+
+
+# Bind the <Configure> event to the signup canvas to resize the background image
+signup_canvas.bind('<Configure>', resize_signup_background_image)
+
+# Load the initial background image for the signup window
+bg_image = ImageTk.PhotoImage(Image.open('./images/nebula.jpg'))
+signup_canvas.create_image(signup_canvas.winfo_width() // 2, signup_canvas.winfo_height() // 2, anchor=tk.CENTER,
+                           image=bg_image)
+signup_canvas.bg_image = bg_image  # Keep a reference to prevent garbage collection
+
 department_label = tk.Label(signup_window, text="Department:", font=("Helvetica", 16), fg="white", bg="#7f1d1d")
-department_label.place(x=400, y=100)
+department_label.place(x=500, y=100)
 department_entry = tk.Entry(signup_window, font=("Helvetica", 14))
-department_entry.place(x=600, y=100, width=300, height=40)
+department_entry.place(x=700, y=100, width=300, height=40)
 
 gender_label = tk.Label(signup_window, text="Gender:", font=("Helvetica", 16), fg="white", bg="#7f1d1d")
-gender_label.place(x=400, y=160)
+gender_label.place(x=500, y=160)
 gender_entry = tk.Entry(signup_window, font=("Helvetica", 14))
-gender_entry.place(x=600, y=160, width=300, height=40)
+gender_entry.place(x=700, y=160, width=300, height=40)
 
 first_name_label = tk.Label(signup_window, text="First Name:", font=("Helvetica", 16), fg="white", bg="#7f1d1d")
-first_name_label.place(x=400, y=220)
+first_name_label.place(x=500, y=220)
 first_name_entry = tk.Entry(signup_window, font=("Helvetica", 14))
-first_name_entry.place(x=600, y=220, width=300, height=40)
+first_name_entry.place(x=700, y=220, width=300, height=40)
 
 last_name_label = tk.Label(signup_window, text="Last Name:", font=("Helvetica", 16), fg="white", bg="#7f1d1d")
-last_name_label.place(x=400, y=280)
+last_name_label.place(x=500, y=280)
 last_name_entry = tk.Entry(signup_window, font=("Helvetica", 14))
-last_name_entry.place(x=600, y=280, width=300, height=40)
+last_name_entry.place(x=700, y=280, width=300, height=40)
 
-admission_number_signup_label = tk.Label(signup_window, text="Admission Number:", font=("Helvetica", 16), fg="white", bg="#7f1d1d")
-admission_number_signup_label.place(x=400, y=340)
+admission_number_signup_label = tk.Label(signup_window, text="Admission Number:", font=("Helvetica", 16), fg="white",
+                                         bg="#7f1d1d")
+admission_number_signup_label.place(x=500, y=340)
 admission_number_signup_entry = tk.Entry(signup_window, font=("Helvetica", 14))
-admission_number_signup_entry.place(x=600, y=340, width=300, height=40)
+admission_number_signup_entry.place(x=700, y=340, width=300, height=40)
 
 password_signup_label = tk.Label(signup_window, text="Password:", font=("Helvetica", 16), fg="white", bg="#7f1d1d")
-password_signup_label.place(x=400, y=400)
+password_signup_label.place(x=500, y=400)
 password_signup_entry = tk.Entry(signup_window, show="*", font=("Helvetica", 14))
-password_signup_entry.place(x=600, y=400, width=300, height=40)
+password_signup_entry.place(x=700, y=400, width=300, height=40)
 
-retype_password_label = tk.Label(signup_window, text="Retype Password:", font=("Helvetica", 16), fg="white", bg="#7f1d1d")
-retype_password_label.place(x=400, y=460)
+retype_password_label = tk.Label(signup_window, text="Retype Password:", font=("Helvetica", 16), fg="white",
+                                 bg="#7f1d1d")
+retype_password_label.place(x=500, y=460)
 retype_password_entry = tk.Entry(signup_window, show="*", font=("Helvetica", 14))
-retype_password_entry.place(x=600, y=460, width=300, height=40)
+retype_password_entry.place(x=700, y=460, width=300, height=40)
 
 email_label = tk.Label(signup_window, text="Email:", font=("Helvetica", 16), fg="white", bg="#7f1d1d")
-email_label.place(x=400, y=520)
+email_label.place(x=500, y=520)
 email_entry = tk.Entry(signup_window, font=("Helvetica", 14))
-email_entry.place(x=600, y=520, width=300, height=40)
+email_entry.place(x=700, y=520, width=300, height=40)
 
 age_label = tk.Label(signup_window, text="Age:", font=("Helvetica", 16), fg="white", bg="#7f1d1d")
-age_label.place(x=400, y=580)
+age_label.place(x=500, y=580)
 age_entry = tk.Entry(signup_window, font=("Helvetica", 14))
-age_entry.place(x=600, y=580, width=300, height=40)
+age_entry.place(x=700, y=580, width=300, height=40)
 
-signup_button = tk.Button(signup_window, text="Sign Up", font=("Helvetica", 18), fg="white", bg="#7f1d1d", command=signup)
-signup_button.place(x=600, y=650, width=150, height=50)
+signup_button = tk.Button(signup_window, text="Sign Up", font=("Helvetica", 18), fg="white", bg="#7f1d1d",
+                          command=signup)
+signup_button.place(x=700, y=650, width=150, height=50)
 
-back_button = tk.Button(signup_window, text="Back", font=("Helvetica", 18), fg="white", bg="#7f1d1d", command=lambda: switch_window(signup_window, login_window))
-back_button.place(x=800, y=650, width=150, height=50)
+back_button = tk.Button(signup_window, text="Back", font=("Helvetica", 18), fg="white", bg="#7f1d1d",
+                        command=lambda: switch_window(signup_window, login_window))
+back_button.place(x=900, y=650, width=150, height=50)
 # Show the login window initially
 login_window.deiconify()
 
