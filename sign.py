@@ -13,7 +13,12 @@ def switch_window(window, new_window):
 
 # Function to handle login
 def login():
-    admission_number = int(admission_number_entry.get())
+    admission_number_str = admission_number_entry.get()
+    if not admission_number_str.isdigit():
+        messagebox.showerror("Invalid Input", "Admission number must contain only digits.")
+        return
+
+    admission_number = int(admission_number_str)
     password = password_entry.get()
 
     # Connect to the MySQL database
@@ -51,11 +56,24 @@ def signup():
     gender = gender_entry.get()
     first_name = first_name_entry.get()
     last_name = last_name_entry.get()
-    admission_number = int(admission_number_signup_entry.get())
+    admission_number_str = admission_number_signup_entry.get()
     password = password_signup_entry.get()
     retype_password = retype_password_entry.get()
     email = email_entry.get()
-    age = int(age_entry.get())  # Convert age to integer
+    age_str = age_entry.get()
+
+    # Validate admission number
+    if not admission_number_str.isdigit():
+        messagebox.showerror("Invalid Input", "Admission number must contain only digits.")
+        return
+
+    # Validate age
+    if not age_str.isdigit():
+        messagebox.showerror("Invalid Input", "Age must contain only digits.")
+        return
+
+    admission_number = int(admission_number_str)
+    age = int(age_str)
 
     if password != retype_password:
         messagebox.showerror("Sign Up Failed", "Passwords do not match.")
@@ -89,7 +107,6 @@ def signup():
     # Close the database connection
     cursor.close()
     conn.close()
-
 
 # Function to handle admin login
 def admin_login():
