@@ -3,7 +3,7 @@ from tkinter import messagebox
 import mysql.connector
 from PIL import ImageTk, Image
 import subprocess
-
+from datetime import datetime
 
 # Function to switch between windows
 def switch_window(window, new_window):
@@ -60,20 +60,21 @@ def signup():
     password = password_signup_entry.get()
     retype_password = retype_password_entry.get()
     email = email_entry.get()
-    age_str = age_entry.get()
+    dob_str = dob_entry.get()
 
     # Validate admission number
     if not admission_number_str.isdigit():
         messagebox.showerror("Invalid Input", "Admission number must contain only digits.")
         return
 
-    # Validate age
-    if not age_str.isdigit():
-        messagebox.showerror("Invalid Input", "Age must contain only digits.")
+        # Validate date of birth
+    try:
+        dob = datetime.strptime(dob_str, "%Y-%m-%d").date()
+    except ValueError:
+        messagebox.showerror("Invalid Input", "Invalid date of birth format. Use YYYY-MM-DD.")
         return
 
     admission_number = int(admission_number_str)
-    age = int(age_str)
 
     if password != retype_password:
         messagebox.showerror("Sign Up Failed", "Passwords do not match.")
@@ -97,8 +98,8 @@ def signup():
         messagebox.showerror("Sign Up Failed", "Admission number already exists.")
     else:
         # Insert the new user into the database
-        query = "INSERT INTO users (department, gender, first_name, last_name, admission_number, password, email, age) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-        values = (department, gender, first_name, last_name, admission_number, password, email, age)
+        query = "INSERT INTO users (department, gender, first_name, last_name, admission_number, password, email, dob) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+        values = (department, gender, first_name, last_name, admission_number, password, email, dob)
         cursor.execute(query, values)
         conn.commit()
         messagebox.showinfo("Sign Up Successful", "You can now log in.")
@@ -386,10 +387,10 @@ email_label.place(x=500, y=520)
 email_entry = tk.Entry(signup_window, font=("Helvetica", 14))
 email_entry.place(x=700, y=520, width=300, height=40)
 
-age_label = tk.Label(signup_window, text="Age:", font=("Helvetica", 16), fg="white", bg="#7f1d1d")
-age_label.place(x=500, y=580)
-age_entry = tk.Entry(signup_window, font=("Helvetica", 14))
-age_entry.place(x=700, y=580, width=300, height=40)
+dob_label = tk.Label(signup_window, text="Date of Birth (YYYY-MM-DD):", font=("Helvetica", 14), fg="white", bg="#7f1d1d")
+dob_label.place(x=455, y=580)
+dob_entry = tk.Entry(signup_window, font=("Helvetica", 16))
+dob_entry.place(x=700, y=580, width=300, height=40)
 
 signup_button = tk.Button(signup_window, text="Sign Up", font=("Helvetica", 18), fg="white", bg="#7f1d1d",
                           command=signup)
