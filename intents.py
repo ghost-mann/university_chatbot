@@ -12,6 +12,7 @@ conn = mysql.connector.connect(
 )
 cursor = conn.cursor()
 
+
 # Function to load intents from the database
 def load_intents():
     intent_tree.delete(*intent_tree.get_children())
@@ -22,6 +23,7 @@ def load_intents():
     for intent in intents:
         tag, patterns, responses = intent
         intent_tree.insert("", "end", values=(tag, patterns, responses))
+
 
 # Function to add a new intent
 def add_intent():
@@ -40,6 +42,7 @@ def add_intent():
         responses_entry.delete(0, tk.END)
     else:
         messagebox.showerror("Error", "Please fill in all fields.")
+
 
 # Function to edit an existing intent
 def edit_intent():
@@ -60,6 +63,7 @@ def edit_intent():
     else:
         messagebox.showerror("Error", "Please select an intent to edit.")
 
+
 # Function to delete an intent
 def delete_intent():
     selected_item = intent_tree.focus()
@@ -72,17 +76,18 @@ def delete_intent():
     else:
         messagebox.showerror("Error", "Please select an intent to delete.")
 
+
 # Create the main window
 root = tk.Tk()
 root.title("Manage Intents")
-root.geometry("800x600")
+root.geometry("1800x1000+50+50")
 
 # Create a canvas for the main window
 canvas = tk.Canvas(root, width=800, height=600)
 canvas.pack(fill=tk.BOTH, expand=True)
 
 # Load the background image (you can replace this with your preferred image)
-bg_image = ImageTk.PhotoImage(Image.open("./images/nebula2.jpg"))
+bg_image = ImageTk.PhotoImage(Image.open("./images/nebula.jpg"))
 canvas.create_image(0, 0, anchor=tk.NW, image=bg_image)
 
 # Create a treeview to display intents

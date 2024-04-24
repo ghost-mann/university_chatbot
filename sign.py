@@ -232,6 +232,10 @@ def open_admin_panel():
         subprocess.Popen(["python", "inquiry.py"])
         admin_panel_window.destroy()
 
+    def launch_manage_intents():
+        subprocess.Popen(["python", "intents.py"])
+        admin_panel_window.destroy()
+
     # Create buttons for admin panel functions
     manage_users_button = tk.Button(admin_panel_window, text="Manage Users", command=launch_manage_users, font=("Helvetica", 16), fg="white", bg="#7f1d1d")
     manage_users_button.place(x=800, y=200, width=250, height=70)
@@ -239,7 +243,7 @@ def open_admin_panel():
     handle_inquiries_button = tk.Button(admin_panel_window, text="Handle Inquiries", command=launch_manage_inquiries, font=("Helvetica", 16), fg="white", bg="#7f1d1d")
     handle_inquiries_button.place(x=800, y=280, width=250, height=70)
 
-    analytics_button = tk.Button(admin_panel_window, text="Analytics", font=("Helvetica", 16), fg="white", bg="#7f1d1d")
+    analytics_button = tk.Button(admin_panel_window, text="Manage Intents", command=launch_manage_intents, font=("Helvetica", 16), fg="white", bg="#7f1d1d")
     analytics_button.place(x=800, y=360, width=250, height=70)
 
     logout_button = tk.Button(admin_panel_window, text="Log Out", command=logout, font=("Helvetica", 16), fg="white", bg="#7f1d1d")
