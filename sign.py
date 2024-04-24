@@ -96,7 +96,29 @@ def admin_login():
     # Create the admin login window
     admin_login_window = tk.Toplevel(root)
     admin_login_window.title("Admin Login")
-    admin_login_window.geometry("300x150")
+    admin_login_window.geometry("600x400")
+    admin_login_window.configure(bg="#2c3e50")
+
+    # create a canvas for admin login window
+    admin_canvas = tk.Canvas(admin_login_window, width=600, height=400)
+    admin_canvas.pack(fill=tk.BOTH, expand=True)
+
+    # Function to resize the background image for the admin login window
+    def resize_admin_background_image(event):
+        canvas_width = event.width
+        canvas_height = event.height
+        bg_image = ImageTk.PhotoImage(Image.open('./images/nebula.jpg').resize((canvas_width, canvas_height)))
+        admin_canvas.create_image(canvas_width // 2, canvas_height // 2, anchor=tk.CENTER, image=bg_image)
+        admin_canvas.bg_image = bg_image  # Keep a reference to prevent garbage collection
+
+    # Bind the <Configure> event to the admin canvas to resize the background image
+    admin_canvas.bind('<Configure>', resize_admin_background_image)
+
+    # Load the initial background image for the admin login window
+    bg_image = ImageTk.PhotoImage(Image.open('./images/nebula.jpg'))
+    admin_canvas.create_image(admin_canvas.winfo_width() // 2, admin_canvas.winfo_height() // 2, anchor=tk.CENTER,
+                              image=bg_image)
+    admin_canvas.bg_image = bg_image  # Keep a reference to prevent garbage collection
 
     # Function to validate admin credentials
     def validate_admin():
@@ -129,20 +151,21 @@ def admin_login():
         conn.close()
 
     # Admin username label and entry
-    admin_username_label = tk.Label(admin_login_window, text="Username:")
-    admin_username_label.pack()
-    admin_username_entry = tk.Entry(admin_login_window)
-    admin_username_entry.pack()
+    admin_username_label = tk.Label(admin_canvas, text="Username:", font=("Helvetica", 14), fg="white", bg="#2c3e50")
+    admin_username_label.place(x=150, y=100)
+    admin_username_entry = tk.Entry(admin_canvas, font=("Helvetica", 12))
+    admin_username_entry.place(x=300, y=100, width=200, height=30)
 
     # Admin password label and entry
-    admin_password_label = tk.Label(admin_login_window, text="Password:")
-    admin_password_label.pack()
-    admin_password_entry = tk.Entry(admin_login_window, show="*")
-    admin_password_entry.pack()
+    admin_password_label = tk.Label(admin_canvas, text="Password:", font=("Helvetica", 14), fg="white", bg="#2c3e50")
+    admin_password_label.place(x=150, y=150)
+
+    admin_password_entry = tk.Entry(admin_canvas, show="*", font=("Helvetica", 12))
+    admin_password_entry.place(x=300, y=150, width=200, height=30)
 
     # Login button
-    login_button = tk.Button(admin_login_window, text="Login", command=validate_admin)
-    login_button.pack(pady=10)
+    login_button = tk.Button(admin_canvas, text="Login", font=("Helvetica", 14), fg="white", bg="#e74c3c", command=validate_admin)
+    login_button.place(x=250, y=250, width=100, height=40)
 
     # Show the admin login window
     admin_login_window.mainloop()
@@ -156,15 +179,27 @@ def open_admin_panel():
     # Create the admin panel window
     admin_panel_window = tk.Toplevel(root)
     admin_panel_window.title("Admin Panel")
-    admin_panel_window.geometry("990x660+50+50")
+    admin_panel_window.geometry("1800x1000+50+50")
+
+    # Create a canvas for the admin panel window
+    admin_panel_canvas = tk.Canvas(admin_panel_window, width=1800, height=1000)
+    admin_panel_canvas.pack(fill=tk.BOTH, expand=True)
 
     # Function to resize the background image
     def resize_background_image(event):
         canvas_width = event.width
         canvas_height = event.height
         bg_image = ImageTk.PhotoImage(Image.open('./images/nebula.jpg').resize((canvas_width, canvas_height)))
-        canvas.create_image(canvas_width // 2, canvas_height // 2, anchor=tk.CENTER, image=bg_image)
-        canvas.bg_image = bg_image
+        admin_panel_canvas.create_image(canvas_width // 2, canvas_height // 2, anchor=tk.CENTER, image=bg_image)
+        admin_panel_canvas.bg_image = bg_image
+
+    # Bind the <Configure> event to the admin panel canvas to resize the background image
+    admin_panel_canvas.bind('<Configure>', resize_background_image)
+
+    # Load the initial background image for the admin panel window
+    bg_image = ImageTk.PhotoImage(Image.open('./images/nebula.jpg'))
+    admin_panel_canvas.create_image(admin_panel_canvas.winfo_width() // 2, admin_panel_canvas.winfo_height() // 2, anchor=tk.CENTER, image=bg_image)
+    admin_panel_canvas.bg_image = bg_image  # Keep a reference to prevent garbage collection
 
     def logout():
         # close admin panel window
@@ -180,17 +215,17 @@ def open_admin_panel():
         admin_panel_window.destroy()
 
     # Create buttons for admin panel functions
-    manage_users_button = tk.Button(admin_panel_window, text="Manage Users", command=launch_manage_users)
-    manage_users_button.pack(pady=5)
+    manage_users_button = tk.Button(admin_panel_window, text="Manage Users", command=launch_manage_users, font=("Helvetica", 16), fg="white", bg="#7f1d1d")
+    manage_users_button.place(x=800, y=200, width=250, height=70)
 
-    handle_inquiries_button = tk.Button(admin_panel_window, text="Handle Inquiries", command=launch_manage_inquiries)
-    handle_inquiries_button.pack(pady=5)
+    handle_inquiries_button = tk.Button(admin_panel_window, text="Handle Inquiries", command=launch_manage_inquiries, font=("Helvetica", 16), fg="white", bg="#7f1d1d")
+    handle_inquiries_button.place(x=800, y=280, width=250, height=70)
 
-    analytics_button = tk.Button(admin_panel_window, text="Analytics")
-    analytics_button.pack(pady=5)
+    analytics_button = tk.Button(admin_panel_window, text="Analytics", font=("Helvetica", 16), fg="white", bg="#7f1d1d")
+    analytics_button.place(x=800, y=360, width=250, height=70)
 
-    logout_button = tk.Button(admin_panel_window, text="Log Out", command=logout)
-    logout_button.pack(pady=5)
+    logout_button = tk.Button(admin_panel_window, text="Log Out", command=logout, font=("Helvetica", 16), fg="white", bg="#7f1d1d")
+    logout_button.place(x=800, y=440, width=250, height=70)
 
     # Show the admin panel window
     admin_panel_window.mainloop()
