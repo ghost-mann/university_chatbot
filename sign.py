@@ -5,6 +5,7 @@ from PIL import ImageTk, Image
 import subprocess
 from datetime import datetime
 
+
 # Function to switch between windows
 def switch_window(window, new_window):
     window.withdraw()
@@ -109,6 +110,7 @@ def signup():
     cursor.close()
     conn.close()
 
+
 # Function to handle admin login
 def admin_login():
     # Create the admin login window
@@ -182,7 +184,8 @@ def admin_login():
     admin_password_entry.place(x=300, y=150, width=200, height=30)
 
     # Login button
-    login_button = tk.Button(admin_canvas, text="Login", font=("Helvetica", 14), fg="white", bg="#e74c3c", command=validate_admin)
+    login_button = tk.Button(admin_canvas, text="Login", font=("Helvetica", 14), fg="white", bg="#e74c3c",
+                             command=validate_admin)
     login_button.place(x=250, y=250, width=100, height=40)
 
     # Show the admin login window
@@ -216,7 +219,8 @@ def open_admin_panel():
 
     # Load the initial background image for the admin panel window
     bg_image = ImageTk.PhotoImage(Image.open('./images/nebula.jpg'))
-    admin_panel_canvas.create_image(admin_panel_canvas.winfo_width() // 2, admin_panel_canvas.winfo_height() // 2, anchor=tk.CENTER, image=bg_image)
+    admin_panel_canvas.create_image(admin_panel_canvas.winfo_width() // 2, admin_panel_canvas.winfo_height() // 2,
+                                    anchor=tk.CENTER, image=bg_image)
     admin_panel_canvas.bg_image = bg_image  # Keep a reference to prevent garbage collection
 
     def logout():
@@ -237,16 +241,20 @@ def open_admin_panel():
         admin_panel_window.destroy()
 
     # Create buttons for admin panel functions
-    manage_users_button = tk.Button(admin_panel_window, text="Manage Users", command=launch_manage_users, font=("Helvetica", 16), fg="white", bg="#7f1d1d")
+    manage_users_button = tk.Button(admin_panel_window, text="Manage Users", command=launch_manage_users,
+                                    font=("Helvetica", 16), fg="white", bg="#7f1d1d")
     manage_users_button.place(x=800, y=200, width=250, height=70)
 
-    handle_inquiries_button = tk.Button(admin_panel_window, text="Handle Inquiries", command=launch_manage_inquiries, font=("Helvetica", 16), fg="white", bg="#7f1d1d")
+    handle_inquiries_button = tk.Button(admin_panel_window, text="Handle Inquiries", command=launch_manage_inquiries,
+                                        font=("Helvetica", 16), fg="white", bg="#7f1d1d")
     handle_inquiries_button.place(x=800, y=280, width=250, height=70)
 
-    analytics_button = tk.Button(admin_panel_window, text="Manage Intents", command=launch_manage_intents, font=("Helvetica", 16), fg="white", bg="#7f1d1d")
-    analytics_button.place(x=800, y=360, width=250, height=70)
+    intents_button = tk.Button(admin_panel_window, text="Manage Intents", command=launch_manage_intents,
+                                 font=("Helvetica", 16), fg="white", bg="#7f1d1d")
+    intents_button.place(x=800, y=360, width=250, height=70)
 
-    logout_button = tk.Button(admin_panel_window, text="Log Out", command=logout, font=("Helvetica", 16), fg="white", bg="#7f1d1d")
+    logout_button = tk.Button(admin_panel_window, text="Log Out", command=logout, font=("Helvetica", 16), fg="white",
+                              bg="#7f1d1d")
     logout_button.place(x=800, y=440, width=250, height=70)
 
     # Show the admin panel window
@@ -391,7 +399,8 @@ email_label.place(x=500, y=520)
 email_entry = tk.Entry(signup_window, font=("Helvetica", 14))
 email_entry.place(x=700, y=520, width=300, height=40)
 
-dob_label = tk.Label(signup_window, text="Date of Birth (YYYY-MM-DD):", font=("Helvetica", 14), fg="white", bg="#7f1d1d")
+dob_label = tk.Label(signup_window, text="Date of Birth (YYYY-MM-DD):", font=("Helvetica", 14), fg="white",
+                     bg="#7f1d1d")
 dob_label.place(x=455, y=580)
 dob_entry = tk.Entry(signup_window, font=("Helvetica", 16))
 dob_entry.place(x=700, y=580, width=300, height=40)
@@ -403,6 +412,7 @@ signup_button.place(x=700, y=650, width=150, height=50)
 back_button = tk.Button(signup_window, text="Back", font=("Helvetica", 18), fg="white", bg="#7f1d1d",
                         command=lambda: switch_window(signup_window, login_window))
 back_button.place(x=900, y=650, width=150, height=50)
+
 # Show the login window initially
 login_window.deiconify()
 
