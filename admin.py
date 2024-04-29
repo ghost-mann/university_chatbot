@@ -17,20 +17,20 @@ def display_users(tree):
     tree.delete(*tree.get_children())
 
     # Fetch user data from the database
-    query = 'SELECT admission_number, first_name, last_name, email, department FROM users'
+    query = 'SELECT admission_number, first_name, last_name, email, department,dob FROM users'
     cursor.execute(query)
     users = cursor.fetchall()
 
     # Insert user data into the table
     for user in users:
-        admission_number, first_name, last_name, email, department = user
-        tree.insert("", "end", values=(admission_number, first_name, last_name, email, department))
+        admission_number, first_name, last_name, email, department, dob = user
+        tree.insert("", "end", values=(admission_number, first_name, last_name, email, department, dob))
 
 
 def edit_user(tree):
     selected_item = tree.selection()
     if selected_item:
-        admission_number, first_name, last_name, email, department = tree.item(selected_item)["values"]
+        admission_number, first_name, last_name, email, department, dob = tree.item(selected_item)["values"]
         edit_window = tk.Toplevel(root)
         edit_window.title("Edit User")
         edit_window.geometry("1000x660+50+50")
@@ -63,14 +63,22 @@ def edit_user(tree):
         department_entry.insert(0, department)
         department_entry.pack()
 
+        # date of birth
+        dob_label = tk.Label(edit_window, text="Date of Birth:")
+        dob_label.pack()
+        dob_entry = tk.Entry(edit_window)
+        dob_entry.insert(0, dob)
+        dob_entry.pack()
+
         def save_changes():
             new_first_name = first_name_entry.get()
             new_last_name = last_name_entry.get()
             new_email = email_entry.get()
             new_department = department_entry.get()
+            new_dob = dob_entry.get()
 
-            update_query = "UPDATE users SET first_name = %s, last_name = %s, email = %s, department = %s WHERE admission_number = %s"
-            cursor.execute(update_query, (new_first_name, new_last_name, new_email, new_department, admission_number))
+            update_query = "UPDATE users SET first_name = %s, last_name = %s, email = %s, department = %s ,dob = %s WHERE admission_number = %s"
+            cursor.execute(update_query, (new_first_name, new_last_name, new_email, new_department, new_dob, admission_number))
             conn.commit()
             messagebox.showinfo("Success", "User details updated successfully!")
             edit_window.destroy()
@@ -98,20 +106,21 @@ def back_to_admin_panel():
     root.withdraw()
 
 
-
 # Create the main window
 root = tk.Tk()
 root.title("Manage Users")
-root.geometry("1250x660+50+50")
+root.geometry("1800x1000+50+50")
 
 # Create a treeview to display user data
-user_tree = ttk.Treeview(root, columns=("admission_number", "first_name", "last_name", "email", "department"),
+user_tree = ttk.Treeview(root, columns=(
+    "admission_number", "first_name", "last_name", "email", "department", "date of birth"),
                          show="headings")
 user_tree.heading("admission_number", text="Admission Number")
 user_tree.heading("first_name", text="First Name")
 user_tree.heading("last_name", text="Last Name")
 user_tree.heading("email", text="Email")
 user_tree.heading("department", text="Department")
+user_tree.heading("date of birth", text="Date of Birth")
 
 # Add a scrollbar to the treeview
 scrollbar = ttk.Scrollbar(root, orient=tk.VERTICAL, command=user_tree.yview)
