@@ -39,7 +39,7 @@ def submit_inquiry():
             # connect to the database
             conn = mysql.connector.connect(
                 host="localhost",
-                user="austin",
+                user="admin",
                 password="root",
                 database="chatbot"
             )
@@ -67,7 +67,7 @@ def get_logged_in_user_admission_number():
         # Connect to the MySQL database
         conn = mysql.connector.connect(
             host="localhost",
-            user="austin",
+            user="admin",
             password="root",
             database="chatbot"
         )
