@@ -413,6 +413,9 @@ back_button = tk.Button(signup_window, text="Back", font=("Helvetica", 18), fg="
                         command=lambda: switch_window(signup_window, login_window))
 back_button.place(x=900, y=650, width=150, height=50)
 
+
+# hide the signup window initially
+signup_window.withdraw()
 # Show the login window initially
 login_window.deiconify()
 
