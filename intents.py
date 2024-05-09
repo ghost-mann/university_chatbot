@@ -68,10 +68,9 @@ def delete_intent():
 
 
 # Function to go back to the main menu
-def go_back():
-    # Add your code here to return to the main menu
-    pass
-
+def logout():
+    # Close the current window
+    root.destroy()
 
 # Function to open the edit intent window
 def edit_intent_window(tag, patterns, responses):
@@ -173,8 +172,8 @@ edit_button.place(x=1200, y=700)
 delete_button = tk.Button(root, text="Delete", command=delete_intent, font=("Helvetica", 16), bg="#431407",fg="#f8fafc", width=10, height=2)
 delete_button.place(x=1200, y=800)
 
-back_button = tk.Button(root, text="Back", command=go_back, font=("Helvetica", 16), bg="#431407",fg="#f8fafc" ,width=10, height=2)
-back_button.place(x=200, y=900)
+logout_button = tk.Button(root, text="Logout", command=logout, font=("Helvetica", 16), bg="#431407",fg="#f8fafc" ,width=10, height=2)
+logout_button.place(x=200, y=900)
 
 # Run the main loop
 root.mainloop()
