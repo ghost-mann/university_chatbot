@@ -143,8 +143,8 @@ edit_button.pack(side=tk.LEFT, padx=5, pady=5)
 delete_button = tk.Button(button_frame, text="Delete User", command=lambda: delete_user(user_tree))
 delete_button.pack(side=tk.LEFT, padx=5, pady=5)
 
-back_button = tk.Button(button_frame, text="Back", command=back_to_admin_panel)
-back_button.pack(side=tk.LEFT, padx=1, pady=5)
+logout_button = tk.Button(button_frame, text="Logout", command=back_to_admin_panel)
+logout_button.pack(side=tk.LEFT, padx=1, pady=5)
 
 root.mainloop()
 
