@@ -139,7 +139,7 @@ intent_tree.column("#0", width=0, stretch=tk.NO)
 intent_tree.column("Tag", width=200)
 intent_tree.column("Patterns", width=400)
 intent_tree.column("Responses", width=400)
-intent_tree.place(x=350, y=100)
+intent_tree.place(x=100, y=80, width=1600, height=500)
 
 # Load existing intents from the database
 load_intents()
@@ -148,7 +148,7 @@ load_intents()
 tag_label = tk.Label(root, text="Tag:", font=("Helvetica", 16), bg="#431407", fg="#f8fafc")
 tag_label.place(x=200, y=600)
 tag_entry = tk.Entry(root, font=("Helvetica", 16))
-tag_entry.place(x=300, y=600, width=300)
+tag_entry.place(x=320, y=600, width=300)
 
 patterns_label = tk.Label(root, text="Patterns:", font=("Helvetica", 16), bg="#431407", fg="#f8fafc")
 patterns_label.place(x=200, y=700)
