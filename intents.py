@@ -76,31 +76,41 @@ def logout():
 def edit_intent_window(tag, patterns, responses):
     edit_window = tk.Toplevel(root)
     edit_window.title("Edit Intent")
+    edit_window.geometry("800x500")
+
+    # Create a canvas to hold the input fields
+    canvas = tk.Canvas(edit_window)
+    canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+
+    # Create a frame on the canvas to hold the input fields
+    input_frame = tk.Frame(canvas)
+    canvas.create_window((0, 0), window=input_frame, anchor=tk.NW)
 
     # Create input fields for editing the intent
-    tag_label = tk.Label(edit_window, text="Tag:", font=("Helvetica", 12))
+    tag_label = tk.Label(input_frame, text="Tag:", font=("Helvetica", 12))
     tag_label.grid(row=0, column=0, padx=10, pady=10)
-    tag_entry = tk.Entry(edit_window, font=("Helvetica", 12))
+    tag_entry = tk.Entry(input_frame, font=("Helvetica", 12))
     tag_entry.grid(row=0, column=1, padx=10, pady=10)
     tag_entry.insert(0, tag)
 
-    patterns_label = tk.Label(edit_window, text="Patterns:", font=("Helvetica", 12))
+    patterns_label = tk.Label(input_frame, text="Patterns:", font=("Helvetica", 12))
     patterns_label.grid(row=1, column=0, padx=10, pady=10)
-    patterns_entry = tk.Entry(edit_window, font=("Helvetica", 12))
+    patterns_entry = tk.Text(input_frame, font=("Helvetica", 12), height=5, width=50, wrap=tk.WORD)
     patterns_entry.grid(row=1, column=1, padx=10, pady=10)
-    patterns_entry.insert(0, patterns)
+    patterns_entry.insert(tk.END, patterns)
 
-    responses_label = tk.Label(edit_window, text="Responses:", font=("Helvetica", 12))
+    responses_label = tk.Label(input_frame, text="Responses:", font=("Helvetica", 12))
     responses_label.grid(row=2, column=0, padx=10, pady=10)
-    responses_entry = tk.Entry(edit_window, font=("Helvetica", 12))
+    responses_entry = tk.Text(input_frame, font=("Helvetica", 12), height=5, width=50, wrap=tk.WORD)
     responses_entry.grid(row=2, column=1, padx=10, pady=10)
-    responses_entry.insert(0, responses)
+    responses_entry.insert(tk.END, responses)
 
     # Create a save button to update the intent
     def save_intent():
         new_tag = tag_entry.get()
-        new_patterns = patterns_entry.get()
-        new_responses = responses_entry.get()
+        new_patterns = patterns_entry.get("1.0", tk.END).strip()
+        new_responses = responses_entry.get("1.0", tk.END).strip()
 
         if new_tag and new_patterns and new_responses:
             values = (new_tag, new_patterns, new_responses, tag)
@@ -112,8 +122,9 @@ def edit_intent_window(tag, patterns, responses):
         else:
             messagebox.showerror("Error", "Please fill in all fields.")
 
-    save_button = tk.Button(edit_window, text="Save", command=save_intent, font=("Helvetica", 12))
-    save_button.grid(row=3, column=0, columnspan=2, padx=10, pady=10)
+    save_button = tk.Button(input_frame, text="Save", command=save_intent, bg="brown",fg="white",font=("Helvetica", 12) )
+    save_button.grid(row=3, column=1, padx=10, pady=10)
+
 
 
 # Create the main window
@@ -126,7 +137,7 @@ canvas = tk.Canvas(root, width=1800, height=1000)
 canvas.pack(fill=tk.BOTH, expand=True)
 
 # Load the background image (you can replace this with your preferred image)
-bg_image = ImageTk.PhotoImage(Image.open("./images/nebula.jpg").resize((1800, 1000)))
+bg_image = ImageTk.PhotoImage(Image.open("./images/nebula.jpg").resize((2560, 1440)))
 canvas.create_image(900, 500, image=bg_image)
 
 # Create a treeview to display intents
@@ -139,7 +150,7 @@ intent_tree.column("#0", width=0, stretch=tk.NO)
 intent_tree.column("Tag", width=200)
 intent_tree.column("Patterns", width=400)
 intent_tree.column("Responses", width=400)
-intent_tree.place(x=100, y=80, width=1600, height=500)
+intent_tree.place(x=200, y=80, width=1600, height=500)
 
 # Load existing intents from the database
 load_intents()
@@ -147,18 +158,18 @@ load_intents()
 # Create input fields for adding/editing intents
 tag_label = tk.Label(root, text="Tag:", font=("Helvetica", 16), bg="#431407", fg="#f8fafc")
 tag_label.place(x=200, y=600)
-tag_entry = tk.Entry(root, font=("Helvetica", 16))
+tag_entry = tk.Entry(root, font=("Helvetica", 14))
 tag_entry.place(x=320, y=600, width=300)
 
 patterns_label = tk.Label(root, text="Patterns:", font=("Helvetica", 16), bg="#431407", fg="#f8fafc")
-patterns_label.place(x=200, y=700)
-patterns_entry = tk.Entry(root, font=("Helvetica", 16))
-patterns_entry.place(x=320, y=700, width=600)
+patterns_label.place(x=200, y=650)
+patterns_entry = tk.Entry(root, font=("Helvetica", 14))
+patterns_entry.place(x=320, y=650, height=100,width=600)
 
 responses_label = tk.Label(root, text="Responses:", font=("Helvetica", 16), bg="#431407", fg="#f8fafc")
-responses_label.place(x=200, y=800)
-responses_entry = tk.Entry(root, font=("Helvetica", 16))
-responses_entry.place(x=320, y=800, width=600)
+responses_label.place(x=200, y=820)
+responses_entry = tk.Entry(root, font=("Helvetica", 14))
+responses_entry.place(x=320, y=820,height=100, width=600)
 
 # Create buttons for managing intents
 add_button = tk.Button(root, text="Add", command=add_intent, font=("Helvetica", 16), bg="#431407", fg="#f8fafc",
@@ -173,7 +184,7 @@ delete_button = tk.Button(root, text="Delete", command=delete_intent, font=("Hel
 delete_button.place(x=1200, y=800)
 
 logout_button = tk.Button(root, text="Logout", command=logout, font=("Helvetica", 16), bg="#431407",fg="#f8fafc" ,width=10, height=2)
-logout_button.place(x=200, y=900)
+logout_button.place(x=1200, y=900)
 
 # Run the main loop
 root.mainloop()
