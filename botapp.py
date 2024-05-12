@@ -55,15 +55,13 @@ class ChatApp:
         return return_list
 
     # Get a response based on the predicted intent
-    def getResponse(self, ints, intents_json):
+    def getResponse(self, ints, intents):
         tag = ints[0]['intent']
-        list_of_intents = intents_json['intents']
-        for i in list_of_intents:
-            if i['tag'] == tag:
-                result = random.choice(i['responses'])
+        for intent in intents:
+            if intent['tag'] == tag:
+                result = random.choice(intent['responses'])
                 break
         return result
-
     # Get a response from the chatbot for a given input text
     def chatbot_response(self, text):
         ints = self.predict_class(text, self._model)

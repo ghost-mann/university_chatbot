@@ -6,6 +6,7 @@ import nltk
 import utils as u
 nltk.download('punkt')
 nltk.download('wordnet')
+import mysql.connector
 
 from keras.models import Sequential
 from keras.layers import Dense, Activation, Dropout
@@ -16,7 +17,7 @@ class ChatModel:
 
     def __init__(self):
         # Call tokenizing procedure
-        w, words, documents, classes, self._intents = self.tokenizing('intents.json')
+        w, words, documents, classes, self._intents = self.tokenizing()
 
         # Call lemmatizing procedure
         w, words, documents, classes, lemmatizer = self.lemmatizing(w, words, documents, classes)
@@ -27,26 +28,46 @@ class ChatModel:
         # Call tokenizing procedure
         self._model = self.training(self._train_x, self._train_y)
 
-    def tokenizing(self, url):
+    def tokenizing(self):
         words = []
         classes = []
         documents = []
-        intents = json.loads(open(url).read())
+        intents = []
 
-        # Load intents data from JSON file
-        with open(url, 'r', encoding='utf-8') as file:
-            intents_data = json.load(file)
+        # Connect to the database
+        db = mysql.connector.connect(
+            host="localhost",
+            user="admin",
+            password="root",
+            database="chatbot"
+        )
 
-        for intent in intents['intents']:
-            for pattern in intent['patterns']:
-                # tokenize each word
-                w = nltk.word_tokenize(pattern)
-                words.extend(w)
-                # add documents in the corpus
-                documents.append((w, intent['tag']))
-                # add to our classes list
-                if intent['tag'] not in classes:
-                    classes.append(intent['tag'])
+        # Create a cursor object
+        cursor = db.cursor()
+
+        # Fetch intents data from the database
+        query = "SELECT tag, patterns, responses FROM intents"
+        cursor.execute(query)
+        result = cursor.fetchall()
+
+        for row in result:
+            intent_tag = row[0]
+            intent_pattern = row[1]
+            intent_responses = row[2].split('|')  # Assuming responses are separated by '|'
+
+            # tokenize the pattern
+            w = nltk.word_tokenize(intent_pattern)
+            words.extend(w)
+            # add documents in the corpus
+            documents.append((w, intent_tag))
+            # add to our classes list
+            if intent_tag not in classes:
+                classes.append(intent_tag)
+
+            intents.append({"tag": intent_tag, "patterns": [intent_pattern], "responses": intent_responses})
+
+        # Close the database connection
+        db.close()
 
         return w, words, documents, classes, intents
 
