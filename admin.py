@@ -1,3 +1,4 @@
+import subprocess
 import tkinter as tk
 from tkinter import ttk, messagebox
 import mysql.connector
@@ -78,7 +79,8 @@ def edit_user(tree):
             new_dob = dob_entry.get()
 
             update_query = "UPDATE users SET first_name = %s, last_name = %s, email = %s, department = %s ,dob = %s WHERE admission_number = %s"
-            cursor.execute(update_query, (new_first_name, new_last_name, new_email, new_department, new_dob, admission_number))
+            cursor.execute(update_query,
+                           (new_first_name, new_last_name, new_email, new_department, new_dob, admission_number))
             conn.commit()
             messagebox.showinfo("Success", "User details updated successfully!")
             edit_window.destroy()
@@ -100,6 +102,15 @@ def delete_user(tree):
             conn.commit()
             messagebox.showinfo("Success", "User deleted successfully!")
             display_users(tree)
+
+
+def inquiries():
+    subprocess.Popen(["python", "inquiry.py"])
+    root.withdraw()
+
+def intents():
+    subprocess.Popen(["python", "intents.py"])
+    root.withdraw()
 
 
 def back_to_admin_panel():
@@ -142,6 +153,12 @@ edit_button.pack(side=tk.LEFT, padx=5, pady=5)
 
 delete_button = tk.Button(button_frame, text="Delete User", command=lambda: delete_user(user_tree))
 delete_button.pack(side=tk.LEFT, padx=5, pady=5)
+
+inquiry_button = tk.Button(button_frame, text="Inquiries", command=inquiries)
+inquiry_button.pack(side=tk.LEFT, padx=5, pady=5)
+
+intents_button = tk.Button(button_frame, text="Intents", command=intents)
+intents_button.pack(side=tk.LEFT, padx=5, pady=5)
 
 logout_button = tk.Button(button_frame, text="Logout", command=back_to_admin_panel)
 logout_button.pack(side=tk.LEFT, padx=1, pady=5)
