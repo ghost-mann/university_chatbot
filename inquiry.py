@@ -33,6 +33,24 @@ def display_inquiries(tree):
         inquiry_text = inquiry[0]
         tree.insert("", "end", values=(index + 1, admission_number, email, inquiry_text))
 
+def delete_inquiry():
+    selected_item = inquiry_tree.selection()
+    if selected_item:
+        item_values = inquiry_tree.item(selected_item)["values"]
+        index = item_values[0]
+        admission_number = item_values[1]
+        inquiry_text = item_values[3]
+
+        confirm = messagebox.askyesno("Confirm Deletion", f"Are you sure you want to delete the inquiry with Index: {index}, Admission Number: {admission_number}, and Inquiry: {inquiry_text}?")
+        if confirm:
+            query = "DELETE FROM inquiries WHERE admission_number = %s AND inquiry = %s"
+            cursor.execute(query, (admission_number, inquiry_text))
+            conn.commit()
+            messagebox.showinfo("Success", "Inquiry deleted successfully!")
+            display_inquiries(inquiry_tree)
+    else:
+        messagebox.showerror("Error", "Please select an inquiry to delete.")
+
 def intents():
     subprocess.Popen(["python", "intents.py"])
     root.withdraw()
@@ -74,6 +92,10 @@ intent_button.pack(side=tk.BOTTOM)
 
 user_button = tk.Button(root, text="Manage Users", command=users)
 user_button.pack(side=tk.BOTTOM)
+
+delete_button = tk.Button(root, text="Delete Inquiry", command=delete_inquiry)
+delete_button.pack(side=tk.BOTTOM)
+
 # Add a button to go back to the admin panel
 logout_button = tk.Button(root, text="Logout", command=logout)
 logout_button.pack(side=tk.BOTTOM, padx=5, pady=5)
