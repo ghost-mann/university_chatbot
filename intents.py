@@ -1,3 +1,4 @@
+import subprocess
 import tkinter as tk
 from tkinter import messagebox, ttk
 import mysql.connector
@@ -67,10 +68,21 @@ def delete_intent():
         messagebox.showerror("Error", "Please select an intent to delete.")
 
 
+def inquiries():
+    subprocess.Popen(["python", "inquiry.py"])
+    root.destroy()
+
+
+def users():
+    subprocess.Popen(["python", "admin.py"])
+    root.destroy()
+
+
 # Function to go back to the main menu
 def logout():
     # Close the current window
     root.destroy()
+
 
 # Function to open the edit intent window
 def edit_intent_window(tag, patterns, responses):
@@ -81,7 +93,6 @@ def edit_intent_window(tag, patterns, responses):
     # Create a canvas to hold the input fields
     canvas = tk.Canvas(edit_window)
     canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-
 
     # Create a frame on the canvas to hold the input fields
     input_frame = tk.Frame(canvas)
@@ -122,9 +133,9 @@ def edit_intent_window(tag, patterns, responses):
         else:
             messagebox.showerror("Error", "Please fill in all fields.")
 
-    save_button = tk.Button(input_frame, text="Save", command=save_intent, bg="brown",fg="white",font=("Helvetica", 12) )
+    save_button = tk.Button(input_frame, text="Save", command=save_intent, bg="brown", fg="white",
+                            font=("Helvetica", 12))
     save_button.grid(row=3, column=1, padx=10, pady=10)
-
 
 
 # Create the main window
@@ -164,12 +175,12 @@ tag_entry.place(x=320, y=600, width=300)
 patterns_label = tk.Label(root, text="Patterns:", font=("Helvetica", 16), bg="#431407", fg="#f8fafc")
 patterns_label.place(x=200, y=650)
 patterns_entry = tk.Entry(root, font=("Helvetica", 14))
-patterns_entry.place(x=320, y=650, height=100,width=600)
+patterns_entry.place(x=320, y=650, height=100, width=600)
 
 responses_label = tk.Label(root, text="Responses:", font=("Helvetica", 16), bg="#431407", fg="#f8fafc")
 responses_label.place(x=200, y=820)
 responses_entry = tk.Entry(root, font=("Helvetica", 14))
-responses_entry.place(x=320, y=820,height=100, width=600)
+responses_entry.place(x=320, y=820, height=100, width=600)
 
 # Create buttons for managing intents
 add_button = tk.Button(root, text="Add", command=add_intent, font=("Helvetica", 16), bg="#431407", fg="#f8fafc",
@@ -180,11 +191,21 @@ edit_button = tk.Button(root, text="Edit", command=edit_intent, font=("Helvetica
                         width=10, height=2)
 edit_button.place(x=1200, y=700)
 
-delete_button = tk.Button(root, text="Delete", command=delete_intent, font=("Helvetica", 16), bg="#431407",fg="#f8fafc", width=10, height=2)
+delete_button = tk.Button(root, text="Delete", command=delete_intent, font=("Helvetica", 16), bg="#431407",
+                          fg="#f8fafc", width=10, height=2)
 delete_button.place(x=1200, y=800)
 
-logout_button = tk.Button(root, text="Logout", command=logout, font=("Helvetica", 16), bg="#431407",fg="#f8fafc" ,width=10, height=2)
+logout_button = tk.Button(root, text="Logout", command=logout, font=("Helvetica", 16), bg="#431407", fg="#f8fafc",
+                          width=10, height=2)
 logout_button.place(x=1200, y=900)
+
+admin_button = tk.Button(root, text="Manage Users", command=users, font=("Helvetica", 16), bg="#431407", fg="#f8fafc",
+                          width=12, height=2)
+admin_button.place(x=1400, y=900)
+
+inquiry_button = tk.Button(root, text="Manage Inquiries", command=inquiries, font=("Helvetica", 16), bg="#431407", fg="#f8fafc",
+                          width=12, height=2)
+inquiry_button.place(x=1600, y=900)
 
 # Run the main loop
 root.mainloop()
