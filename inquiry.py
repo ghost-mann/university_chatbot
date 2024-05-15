@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 import mysql.connector
+import subprocess
 
 # Connect to MySQL database
 conn = mysql.connector.connect(
@@ -28,14 +29,22 @@ def display_inquiries(tree):
         tree.insert("", "end", values=(index + 1, admission_number, inquiry_text))
 
 
-def back_to_admin_panel():
+def intents():
+    subprocess.Popen(["python", "intents.py"])
+    root.withdraw()
+
+def users():
+    subprocess.Popen(["python", "admin.py"])
+    root.withdraw()
+
+def logout():
     root.withdraw()
 
 
 # Create the main window
 root = tk.Tk()
 root.title("Manage Inquiries")
-root.geometry("1250x660+50+50")
+root.geometry("1800x1000+50+50")
 
 # Create a treeview to display inquiry data
 inquiry_tree = ttk.Treeview(root, columns=("index", "admission_number", "inquiry"), show="headings")
@@ -54,9 +63,14 @@ scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 # Display inquiries
 display_inquiries(inquiry_tree)
 
+intent_button = tk.Button(root, text="Manage Intents", command=intents)
+intent_button.pack(side=tk.BOTTOM)
+
+user_button = tk.Button(root, text="Manage Users", command=users)
+user_button.pack(side=tk.BOTTOM)
 # Add a button to go back to the admin panel
-back_button = tk.Button(root, text="Back", command=back_to_admin_panel)
-back_button.pack(side=tk.BOTTOM, padx=5, pady=5)
+logout_button = tk.Button(root, text="Logout", command=logout)
+logout_button.pack(side=tk.BOTTOM, padx=5, pady=5)
 
 # Start the Tkinter event loop
 root.mainloop()
