@@ -1,9 +1,10 @@
 import subprocess
 import tkinter as tk
+
+# Connect to MySQL database
 from tkinter import ttk, messagebox
 import mysql.connector
 
-# Connect to MySQL database
 conn = mysql.connector.connect(
     host="localhost",
     user="root",
@@ -107,6 +108,7 @@ def delete_user(tree):
 def inquiries():
     subprocess.Popen(["python", "inquiry.py"])
     root.withdraw()
+
 
 def intents():
     subprocess.Popen(["python", "intents.py"])

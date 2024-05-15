@@ -35,6 +35,7 @@ def display_inquiries(tree):
         resolved_status = "Resolved" if is_resolved else "Unresolved"
         tree.insert("", "end", values=(index + 1, admission_number, email, inquiry_text, resolved_status))
 
+
 def mark_inquiry_resolved():
     selected_item = inquiry_tree.selection()
     if selected_item:
@@ -50,6 +51,7 @@ def mark_inquiry_resolved():
         display_inquiries(inquiry_tree)
     else:
         messagebox.showerror("Error", "Please select an inquiry to mark as resolved.")
+
 
 def mark_inquiry_unresolved():
     selected_item = inquiry_tree.selection()
