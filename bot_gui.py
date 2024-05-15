@@ -67,7 +67,7 @@ def get_logged_in_user_admission_number():
         # Connect to the MySQL database
         conn = mysql.connector.connect(
             host="localhost",
-            user="admin",
+            user="root",
             password="root",
             database="chatbot"
         )

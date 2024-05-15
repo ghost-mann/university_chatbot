@@ -4,6 +4,7 @@ import mysql.connector
 from PIL import ImageTk, Image
 import subprocess
 from datetime import datetime
+import hashlib
 
 
 # Function to switch between windows
@@ -22,6 +23,9 @@ def login():
     admission_number = int(admission_number_str)
     password = password_entry.get()
 
+    # hash the password entered
+    hashed_password = hashlib.sha256(password.encode()).hexdigest()
+
     # Connect to the MySQL database
     conn = mysql.connector.connect(
         host="localhost",
@@ -33,7 +37,7 @@ def login():
 
     # Check if the user exists in the database
     query = "SELECT * FROM users WHERE admission_number = %s AND password = %s"
-    cursor.execute(query, (admission_number, password))
+    cursor.execute(query, (admission_number, hashed_password))
     user = cursor.fetchone()
 
     if user:
@@ -69,7 +73,7 @@ def signup():
         messagebox.showerror("Invalid Input", "Admission number must contain only digits.")
         return
 
-        # Validate date of birth
+    # Validate date of birth
     try:
         dob = datetime.strptime(dob_str, "%Y-%m-%d").date()
     except ValueError:
@@ -81,6 +85,9 @@ def signup():
     if password != retype_password:
         messagebox.showerror("Sign Up Failed", "Passwords do not match.")
         return
+
+    # Hash the password
+    hashed_password = hashlib.sha256(password.encode()).hexdigest()
 
     # Connect to the MySQL database
     conn = mysql.connector.connect(
@@ -101,7 +108,7 @@ def signup():
     else:
         # Insert the new user into the database
         query = "INSERT INTO users (department, gender, first_name, last_name, admission_number, password, email, dob) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-        values = (department, gender, first_name, last_name, admission_number, password, email, dob)
+        values = (department, gender, first_name, last_name, admission_number, hashed_password, email, dob)
         cursor.execute(query, values)
         conn.commit()
         messagebox.showinfo("Sign Up Successful", "You can now log in.")
