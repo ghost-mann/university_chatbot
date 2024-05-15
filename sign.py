@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox
+from tkinter import messagebox, ttk
 import mysql.connector
 from PIL import ImageTk, Image
 import subprocess
@@ -372,7 +372,7 @@ department_entry.place(x=700, y=100, width=300, height=40)
 
 gender_label = tk.Label(signup_window, text="Gender:", font=("Helvetica", 16), fg="white", bg="#7f1d1d")
 gender_label.place(x=500, y=160)
-gender_entry = tk.Entry(signup_window, font=("Helvetica", 14))
+gender_entry = ttk.Combobox(signup_window, values=["Male", "Female"], font=("Helvetica", 14), state="readonly")
 gender_entry.place(x=700, y=160, width=300, height=40)
 
 first_name_label = tk.Label(signup_window, text="First Name:", font=("Helvetica", 16), fg="white", bg="#7f1d1d")
@@ -415,12 +415,11 @@ dob_entry.place(x=700, y=580, width=300, height=40)
 
 signup_button = tk.Button(signup_window, text="Sign Up", font=("Helvetica", 18), fg="white", bg="#7f1d1d",
                           command=signup)
-signup_button.place(x=700, y=650, width=150, height=50)
+signup_button.place(x=600, y=650, width=150, height=50)
 
 back_button = tk.Button(signup_window, text="Back", font=("Helvetica", 18), fg="white", bg="#7f1d1d",
                         command=lambda: switch_window(signup_window, login_window))
-back_button.place(x=900, y=650, width=150, height=50)
-
+back_button.place(x=800, y=650, width=150, height=50)
 
 # hide the signup window initially
 signup_window.withdraw()
