@@ -6,7 +6,7 @@ from PIL import ImageTk, Image
 # Connect to the MySQL database
 conn = mysql.connector.connect(
     host="localhost",
-    user="admin",
+    user="root",
     password="root",
     database="chatbot"
 )

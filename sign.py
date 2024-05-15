@@ -25,7 +25,7 @@ def login():
     # Connect to the MySQL database
     conn = mysql.connector.connect(
         host="localhost",
-        user="admin",
+        user="root",
         password="root",
         database="chatbot"
     )
@@ -85,7 +85,7 @@ def signup():
     # Connect to the MySQL database
     conn = mysql.connector.connect(
         host="localhost",
-        user="admin",
+        user="root",
         password="root",
         database="chatbot"
     )
@@ -149,7 +149,7 @@ def admin_login():
         # Connect to the MySQL database
         conn = mysql.connector.connect(
             host="localhost",
-            user="admin",
+            user="root",
             password="root",
             database="chatbot"
         )

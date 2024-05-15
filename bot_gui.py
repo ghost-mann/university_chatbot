@@ -39,7 +39,7 @@ def submit_inquiry():
             # connect to the database
             conn = mysql.connector.connect(
                 host="localhost",
-                user="admin",
+                user="root",
                 password="root",
                 database="chatbot"
             )

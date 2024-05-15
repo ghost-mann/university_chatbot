@@ -1,15 +1,17 @@
 # Import all packages we'll need.
-import json
-import numpy as np
 import random
+
 import nltk
+import numpy as np
+
 import utils as u
+
 nltk.download('punkt')
 nltk.download('wordnet')
 import mysql.connector
 
 from keras.models import Sequential
-from keras.layers import Dense, Activation, Dropout
+from keras.layers import Dense, Dropout
 from keras.optimizers import SGD
 
 
@@ -37,7 +39,7 @@ class ChatModel:
         # Connect to the database
         db = mysql.connector.connect(
             host="localhost",
-            user="admin",
+            user="root",
             password="root",
             database="chatbot"
         )
