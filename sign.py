@@ -5,7 +5,7 @@ from PIL import ImageTk, Image
 import subprocess
 from datetime import datetime
 import hashlib
-
+import re
 
 # Function to switch between windows
 def switch_window(window, new_window):
@@ -81,6 +81,14 @@ def signup():
         return
 
     admission_number = int(admission_number_str)
+
+    # Check password complexity
+    password_pattern = r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{6,}$'
+    if not re.match(password_pattern, password):
+        messagebox.showerror("Invalid Password",
+                             "Password must be at least 6 characters long and contain at least one letter, one digit, "
+                             "and one special character.")
+        return
 
     if password != retype_password:
         messagebox.showerror("Sign Up Failed", "Passwords do not match.")
