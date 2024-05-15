@@ -17,25 +17,31 @@ def display_inquiries(tree):
     # Clear existing data
     tree.delete(*tree.get_children())
 
-    # Fetch inquiry data from the database
-    query = 'SELECT inquiry, admission_number FROM inquiries'
+    # Fetch inquiry data from the database with email
+    query = """
+        SELECT i.inquiry, i.admission_number, u.email
+        FROM inquiries i
+        JOIN users u ON i.admission_number = u.admission_number
+    """
     cursor.execute(query)
     inquiries = cursor.fetchall()
 
     # Insert inquiry data into the table
     for index, inquiry in enumerate(inquiries):
         admission_number = inquiry[1]
+        email = inquiry[2]
         inquiry_text = inquiry[0]
-        tree.insert("", "end", values=(index + 1, admission_number, inquiry_text))
-
+        tree.insert("", "end", values=(index + 1, admission_number, email, inquiry_text))
 
 def intents():
     subprocess.Popen(["python", "intents.py"])
     root.withdraw()
 
+
 def users():
     subprocess.Popen(["python", "admin.py"])
     root.withdraw()
+
 
 def logout():
     root.withdraw()
@@ -47,11 +53,11 @@ root.title("Manage Inquiries")
 root.geometry("1800x1000+50+50")
 
 # Create a treeview to display inquiry data
-inquiry_tree = ttk.Treeview(root, columns=("index", "admission_number", "inquiry"), show="headings")
+inquiry_tree = ttk.Treeview(root, columns=("index", "admission_number", "email", "inquiry"), show="headings")
 inquiry_tree.heading("index", text="Index")
 inquiry_tree.heading("admission_number", text="Admission Number")
+inquiry_tree.heading("email", text="Email")
 inquiry_tree.heading("inquiry", text="Inquiry")
-
 # Add a scrollbar to the treeview
 scrollbar = ttk.Scrollbar(root, orient=tk.VERTICAL, command=inquiry_tree.yview)
 inquiry_tree.configure(yscrollcommand=scrollbar.set)
