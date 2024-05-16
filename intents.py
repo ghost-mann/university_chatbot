@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import messagebox, ttk
 import mysql.connector
 from PIL import ImageTk, Image
+from datetime import datetime
 
 # Connect to the MySQL database
 conn = mysql.connector.connect(
@@ -12,6 +13,19 @@ conn = mysql.connector.connect(
     database="chatbot"
 )
 cursor = conn.cursor()
+
+
+# Function to log admin operations
+def log_admin_operation(admin_username, operation, table_name, record):
+    try:
+        # Insert the admin operation into the database
+        query = "INSERT INTO admin_logs (admin_username, operation, table_name, record) VALUES (%s, %s, %s, %s)"
+        values = (admin_username, operation, table_name, str(record))
+        cursor.execute(query, values)
+        conn.commit()
+
+    except mysql.connector.Error as error:
+        print("Error logging admin operation:", error)
 
 
 # Function to load intents from the database
@@ -41,6 +55,11 @@ def add_intent():
         tag_entry.delete(0, tk.END)
         patterns_entry.delete(0, tk.END)
         responses_entry.delete(0, tk.END)
+
+        # Log the admin operation
+        admin_username = "admin123"  # Replace with the actual admin username
+        log_admin_operation(admin_username, "CREATE", "intents", values)
+
     else:
         messagebox.showerror("Error", "Please fill in all fields.")
 
@@ -64,6 +83,11 @@ def delete_intent():
         cursor.execute(query, (tag,))
         conn.commit()
         load_intents()
+
+        # Log the admin operation
+        admin_username = "admin123"  # Replace with the actual admin username
+        log_admin_operation(admin_username, "DELETE", "intents", tag)
+
     else:
         messagebox.showerror("Error", "Please select an intent to delete.")
 
@@ -130,6 +154,11 @@ def edit_intent_window(tag, patterns, responses):
             conn.commit()
             load_intents()
             edit_window.destroy()
+
+            # Log the admin operation
+            admin_username = "admin123"  # Replace with the actual admin username
+            log_admin_operation(admin_username, "UPDATE", "intents", values)
+
         else:
             messagebox.showerror("Error", "Please fill in all fields.")
 

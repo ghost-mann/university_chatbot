@@ -28,6 +28,30 @@ def send():
         ChatLog.config(state=DISABLED)
         ChatLog.yview(END)
 
+        # Log the user's message and chatbot's response into the database
+        try:
+            # Connect to the MySQL database
+            conn = mysql.connector.connect(
+                host="localhost",
+                user="root",
+                password="root",
+                database="chatbot"
+            )
+            cursor = conn.cursor()
+
+            # Insert the user's message and chatbot's response into the database
+            query = "INSERT INTO user_logs (admission_number, user_message, chatbot_response) VALUES (%s, %s, %s)"
+            values = (admission_number, msg, res)
+            cursor.execute(query, values)
+            conn.commit()
+
+            # Close the database connection
+            cursor.close()
+            conn.close()
+
+        except mysql.connector.Error as error:
+            print("Error logging user message and chatbot response:", error)
+
 
 # function to submit inquiry into the database
 def submit_inquiry():
@@ -104,7 +128,7 @@ base.geometry("990x660+50+50")
 base.resizable(width=FALSE, height=FALSE)
 
 # Create Chat window
-ChatLog = Text(base, bd=0, bg="white", height="8",font="Arial")
+ChatLog = Text(base, bd=0, bg="white", height="8", font="Arial")
 ChatLog.config(state=DISABLED)
 
 # Vertical scrollbar to Chat window
@@ -121,13 +145,13 @@ SendButton = Button(base, font=("Verdana", 12, 'bold'), text="Send", width="12",
                     command=send)
 
 # Create the box to enter message
-EntryBox = Text(base, bd=0, bg="white",height="5", font="Arial")
+EntryBox = Text(base, bd=0, bg="white", height="5", font="Arial")
 
 # Create a label to display the admission number
 admission_number_label = Label(base, text=f"Admission Number:", font=("Arial", 12, 'bold'))
 
 # create an inquiry submission box
-InquiryBox = Text(base, bd=0, bg="white",height="5", font="Arial")
+InquiryBox = Text(base, bd=0, bg="white", height="5", font="Arial")
 
 # create a inquire button
 inquiry_button = Button(base, font=("Verdana", 12, 'bold'), text="Submit Inquiry", width="12", height=5,

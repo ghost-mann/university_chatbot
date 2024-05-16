@@ -259,8 +259,9 @@ def super_admin_login():
         if super_admin:
             messagebox.showinfo("Login Successful", "Welcome, Super Admin!")
             super_admin_login_window.withdraw()
-            # Open the super admin panel or perform desired actions
-            # ...
+            # Open the super admin panel
+            subprocess.Popen(["python","superadmin.py"])
+
 
         else:
             messagebox.showerror("Login Failed", "Invalid username or password.")
