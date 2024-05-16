@@ -33,26 +33,28 @@ def show_user_logs():
     user_logs_window.geometry("1200x800+300+100")
 
     # Create a treeview to display user logs
-    user_logs_tree = ttk.Treeview(user_logs_window, columns=("Timestamp", "Admission Number", "Prompt"))
+    user_logs_tree = ttk.Treeview(user_logs_window, columns=("Timestamp", "Admission Number", "User Message", "Chatbot Response"))
     user_logs_tree.heading("#0", text="")
     user_logs_tree.heading("Timestamp", text="Timestamp")
     user_logs_tree.heading("Admission Number", text="Admission Number")
-    user_logs_tree.heading("Prompt", text="Prompt")
+    user_logs_tree.heading("User Message", text="User Message")
+    user_logs_tree.heading("Chatbot Response", text="Chatbot Response")
     user_logs_tree.column("#0", width=0, stretch=tk.NO)
     user_logs_tree.column("Timestamp", width=200)
     user_logs_tree.column("Admission Number", width=200)
-    user_logs_tree.column("Prompt", width=800)
+    user_logs_tree.column("User Message", width=400)
+    user_logs_tree.column("Chatbot Response", width=400)
     user_logs_tree.pack(fill=tk.BOTH, expand=True)
 
     # Fetch user logs from the database
-    query = "SELECT timestamp, admission_number, user_message,chatbot_response FROM user_logs"
+    query = "SELECT timestamp, admission_number, user_message, chatbot_response FROM user_logs"
     cursor.execute(query)
     user_logs = cursor.fetchall()
 
     # Insert user logs into the treeview
     for log in user_logs:
-        timestamp, admission_number, prompt = log
-        user_logs_tree.insert("", "end", values=(timestamp, admission_number, prompt))
+        timestamp, admission_number, user_message, chatbot_response = log
+        user_logs_tree.insert("", "end", values=(timestamp, admission_number, user_message, chatbot_response))
 
 
 def show_admin_logs():
