@@ -210,6 +210,84 @@ def admin_login():
     # Show the admin login window
     admin_login_window.mainloop()
 
+def super_admin_login():
+    # Create the super admin login window
+    super_admin_login_window = tk.Toplevel(root)
+    super_admin_login_window.title("Super Admin Login")
+    super_admin_login_window.geometry("600x400")
+    super_admin_login_window.configure(bg="#2c3e50")
+
+    # Create a canvas for the super admin login window
+    super_admin_canvas = tk.Canvas(super_admin_login_window, width=600, height=400)
+    super_admin_canvas.pack(fill=tk.BOTH, expand=True)
+
+    # Function to resize the background image for the super admin login window
+    def resize_super_admin_background_image(event):
+        canvas_width = event.width
+        canvas_height = event.height
+        bg_image = ImageTk.PhotoImage(Image.open('./images/nebula.jpg').resize((canvas_width, canvas_height)))
+        super_admin_canvas.create_image(canvas_width // 2, canvas_height // 2, anchor=tk.CENTER, image=bg_image)
+        super_admin_canvas.bg_image = bg_image  # Keep a reference to prevent garbage collection
+
+    # Bind the <Configure> event to the super admin canvas to resize the background image
+    super_admin_canvas.bind('<Configure>', resize_super_admin_background_image)
+
+    # Load the initial background image for the super admin login window
+    bg_image = ImageTk.PhotoImage(Image.open('./images/nebula.jpg'))
+    super_admin_canvas.create_image(super_admin_canvas.winfo_width() // 2, super_admin_canvas.winfo_height() // 2, anchor=tk.CENTER, image=bg_image)
+    super_admin_canvas.bg_image = bg_image  # Keep a reference to prevent garbage collection
+
+    # Function to validate super admin credentials
+    def validate_super_admin():
+        super_admin_username = super_admin_username_entry.get()
+        super_admin_password = super_admin_password_entry.get()
+
+        # Connect to the MySQL database
+        conn = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="root",
+            database="chatbot"
+        )
+        cursor = conn.cursor()
+
+        # Check if the super admin credentials are valid
+        query = "SELECT * FROM super_admin WHERE super_admin_username = %s AND super_admin_password = %s"
+        cursor.execute(query, (super_admin_username, super_admin_password))
+        super_admin = cursor.fetchone()
+
+        if super_admin:
+            messagebox.showinfo("Login Successful", "Welcome, Super Admin!")
+            super_admin_login_window.withdraw()
+            # Open the super admin panel or perform desired actions
+            # ...
+
+        else:
+            messagebox.showerror("Login Failed", "Invalid username or password.")
+
+        # Close the database connection
+        cursor.close()
+        conn.close()
+
+    # Super admin username label and entry
+    super_admin_username_label = tk.Label(super_admin_canvas, text="Username:", font=("Helvetica", 14), fg="white", bg="#2c3e50")
+    super_admin_username_label.place(x=150, y=100)
+    super_admin_username_entry = tk.Entry(super_admin_canvas, font=("Helvetica", 12))
+    super_admin_username_entry.place(x=300, y=100, width=200, height=30)
+
+    # Super admin password label and entry
+    super_admin_password_label = tk.Label(super_admin_canvas, text="Password:", font=("Helvetica", 14), fg="white", bg="#2c3e50")
+    super_admin_password_label.place(x=150, y=150)
+    super_admin_password_entry = tk.Entry(super_admin_canvas, show="*", font=("Helvetica", 12))
+    super_admin_password_entry.place(x=300, y=150, width=200, height=30)
+
+    # Login button
+    login_button = tk.Button(super_admin_canvas, text="Login", font=("Helvetica", 14), fg="white", bg="#e74c3c", command=validate_super_admin)
+    login_button.place(x=250, y=250, width=100, height=40)
+
+    # Show the super admin login window
+    super_admin_login_window.mainloop()
+
 
 # Function to open the admin panel
 
@@ -270,16 +348,19 @@ password_entry = tk.Entry(login_window, show="*", font=("Helvetica", 16), bg="wh
 password_entry.place(x=800, y=650, width=400, height=50)
 
 login_button = tk.Button(login_window, text="Login", font=("Helvetica", 20), fg="white", bg="#7f1d1d", command=login)
-login_button.place(x=600, y=750, width=200, height=60)
+login_button.place(x=600, y=750, width=230, height=60)
 
 signup_button = tk.Button(login_window, text="Sign Up", font=("Helvetica", 20), fg="white", bg="#7f1d1d",
                           command=lambda: switch_window(login_window, signup_window))
-signup_button.place(x=1000, y=750, width=200, height=60)
+signup_button.place(x=1000, y=750, width=230, height=60)
 
 # Add a button to open the admin login window
 admin_button = tk.Button(login_window, text="Admin Login", font=("Helvetica", 20), fg="white", bg="#7f1d1d",
                          command=admin_login)
-admin_button.place(x=800, y=850, width=200, height=60)
+admin_button.place(x=600, y=850, width=230, height=60)
+
+super_admin_button = tk.Button(login_window, text="Super Admin Login", font=("Helvetica", 20), fg="white", bg="#7f1d1d", command=super_admin_login)
+super_admin_button.place(x=1000, y=850, width=230, height=60)
 
 # Signup Window
 signup_window = tk.Toplevel(root)
