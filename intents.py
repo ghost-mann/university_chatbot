@@ -28,6 +28,22 @@ def log_admin_operation(admin_username, operation, table_name, record):
         print("Error logging admin operation:", error)
 
 
+# get admin username
+def get_admin_username():
+    try:
+        query = "SELECT admin_username FROM administrators WHERE administrators.admin_id = 1"  # Assuming the first
+        # row is the admin user
+        cursor.execute(query)
+        result = cursor.fetchone()
+        if result:
+            return result[0]  # Return the username from the first row
+        else:
+            return "Unknown"  # Return a default value if no admin user is found
+    except mysql.connector.Error as error:
+        print("Error retrieving admin username:", error)
+        return "Unknown"
+
+
 # Function to load intents from the database
 def load_intents():
     intent_tree.delete(*intent_tree.get_children())
@@ -229,11 +245,12 @@ logout_button = tk.Button(root, text="Logout", command=logout, font=("Helvetica"
 logout_button.place(x=1200, y=900)
 
 admin_button = tk.Button(root, text="Manage Users", command=users, font=("Helvetica", 16), bg="#431407", fg="#f8fafc",
-                          width=12, height=2)
+                         width=12, height=2)
 admin_button.place(x=1400, y=900)
 
-inquiry_button = tk.Button(root, text="Manage Inquiries", command=inquiries, font=("Helvetica", 16), bg="#431407", fg="#f8fafc",
-                          width=12, height=2)
+inquiry_button = tk.Button(root, text="Manage Inquiries", command=inquiries, font=("Helvetica", 16), bg="#431407",
+                           fg="#f8fafc",
+                           width=12, height=2)
 inquiry_button.place(x=1600, y=900)
 
 # Run the main loop
