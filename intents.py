@@ -73,7 +73,7 @@ def add_intent():
         responses_entry.delete(0, tk.END)
 
         # Log the admin operation
-        admin_username = "admin123"  # Replace with the actual admin username
+        admin_username = "austin"  # Replace with the actual admin username
         log_admin_operation(admin_username, "CREATE", "intents", values)
 
     else:

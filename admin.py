@@ -15,7 +15,7 @@ conn = mysql.connector.connect(
 cursor = conn.cursor()
 
 # Admin name (replace with your logic to get the actual admin name)
-admin_name = "John Doe"
+admin_name = "austin"
 
 
 def log_operation(operation_type, user_details, table_name):

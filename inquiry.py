@@ -13,7 +13,7 @@ conn = mysql.connector.connect(
 cursor = conn.cursor()
 
 # Assume this variable is set after a successful admin login
-logged_in_admin_username = "admin123"  # Replace with the actual admin username
+logged_in_admin_username = "austin"  # Replace with the actual admin username
 
 
 # Function to log admin operations
