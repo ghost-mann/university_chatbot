@@ -1,5 +1,6 @@
 import subprocess
 import tkinter as tk
+from datetime import datetime
 
 # Connect to MySQL database
 from tkinter import ttk, messagebox
@@ -13,13 +14,22 @@ conn = mysql.connector.connect(
 )
 cursor = conn.cursor()
 
+# Admin name (replace with your logic to get the actual admin name)
+admin_name = "John Doe"
+
+
+def log_operation(operation_type, user_details, table_name):
+    insert_query = "INSERT INTO admin_logs (operation, record, table_name, admin_username) VALUES (%s, %s, %s, %s)"
+    cursor.execute(insert_query, (operation_type, user_details, table_name, admin_name))
+    conn.commit()
+
 
 def display_users(tree):
     # Clear existing data
     tree.delete(*tree.get_children())
 
     # Fetch user data from the database
-    query = 'SELECT admission_number, first_name, last_name, email, department,dob FROM users'
+    query = 'SELECT admission_number, first_name, last_name, email, department, dob FROM users'
     cursor.execute(query)
     users = cursor.fetchall()
 
@@ -79,10 +89,12 @@ def edit_user(tree):
             new_department = department_entry.get()
             new_dob = dob_entry.get()
 
-            update_query = "UPDATE users SET first_name = %s, last_name = %s, email = %s, department = %s ,dob = %s WHERE admission_number = %s"
+            update_query = "UPDATE users SET first_name = %s, last_name = %s, email = %s, department = %s, dob = %s WHERE admission_number = %s"
             cursor.execute(update_query,
                            (new_first_name, new_last_name, new_email, new_department, new_dob, admission_number))
             conn.commit()
+            user_details = f"Admission Number: {admission_number}, First Name: {new_first_name}, Last Name: {new_last_name}, Email: {new_email}, Department: {new_department}, DOB: {new_dob}"
+            log_operation("Update", user_details, "users")
             messagebox.showinfo("Success", "User details updated successfully!")
             edit_window.destroy()
             display_users(user_tree)
@@ -94,15 +106,17 @@ def edit_user(tree):
 def delete_user(tree):
     selected_item = tree.selection()
     if selected_item:
-        admission_number = tree.item(selected_item)["values"][0]
+        admission_number, first_name, last_name, email, department, dob = tree.item(selected_item)["values"]
         confirm = messagebox.askyesno("Confirm Deletion",
                                       f"Are you sure you want to delete the user with Admission Number: {admission_number}?")
         if confirm:
             delete_query = "DELETE FROM users WHERE admission_number = %s"
             cursor.execute(delete_query, (admission_number,))
             conn.commit()
+            user_details = f"Admission Number: {admission_number}, First Name: {first_name}, Last Name: {last_name}, Email: {email}, Department: {department}, DOB: {dob}"
+            log_operation("Delete", user_details, "users")
             messagebox.showinfo("Success", "User deleted successfully!")
-            display_users(tree)
+            display_users(user_tree)
 
 
 def inquiries():
